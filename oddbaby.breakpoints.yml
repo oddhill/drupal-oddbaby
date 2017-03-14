@@ -1,0 +1,27 @@
+oddbaby.small:
+  label: breakpoint-small
+  mediaQuery: '(min-width: 576px)'
+  weight: 0
+  multipliers:
+    - 1x
+
+oddbaby.medium:
+  label: breakpoint-medium
+  mediaQuery: '(min-width: 768px)'
+  weight: 1
+  multipliers:
+    - 1x
+
+oddbaby.large:
+  label: breakpoint-large
+  mediaQuery: '(min-width: 992px)'
+  weight: 2
+  multipliers:
+    - 1x
+
+oddbaby.xlarge:
+  label: breakpoint-xlarge
+  mediaQuery: '(min-width: 1200px)'
+  weight: 3
+  multipliers:
+    - 1x

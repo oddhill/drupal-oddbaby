@@ -1,0 +1,13 @@
+// Import external styling.
+@import '~normalize.css/normalize.css';
+
+// Import general styling.
+@import 'general', 'typography';
+
+// Import component styling.
+@import 'components/button';
+@import 'components/pagination';
+
+// Import media styling.
+@import 'media/image';
+@import 'media/video';

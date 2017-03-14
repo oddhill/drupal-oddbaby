@@ -1,0 +1,24 @@
+@import '../variables';
+
+// Button styling.
+
+.button {
+  display: inline-block;
+  width: 100%;
+}
+
+.button--block {
+  display: block;
+}
+
+.button--rounded {
+  border-radius: $default-border-radius;
+}
+
+.button--primary {
+  background-color: $button-primary-background-color;
+}
+
+.button--secondary {
+  background-color: $button-secondary-background-color;
+}

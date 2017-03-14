@@ -1,0 +1,30 @@
+<?php
+
+/**
+ * @file
+ * Main file for the Odd Baby theme.
+ */
+
+/**
+ * Modifies non system css @imports to be added as link tags.
+ *
+ * Implements hook_css_alter().
+ */
+function oddbaby_css_alter(&$css) {
+  $system_css_preprocess = \Drupal::config('system.performance')->get('css.preprocess');
+
+  // Only apply the modifications if css pre-processing is turned off.
+  if ($system_css_preprocess) {
+    return;
+  }
+
+  // Modify all css imports except the core files since we don't need
+  // Browser Sync to reload these files.
+  foreach ($css as $key => $value) {
+    $is_core = (strpos($value['data'], 'misc/') === 0 || strpos($value['data'], 'modules/') === 0);
+
+    if (!$is_core) {
+      $css[$key]['preprocess'] = FALSE;
+    }
+  }
+}
