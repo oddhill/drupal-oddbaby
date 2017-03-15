@@ -7,7 +7,7 @@
   "author": "Christoffer Palm <christoffer.palm@oddhill.se>",
   "license": "MIT",
   "scripts": {
-    "start": "NODE_ENV=development webpack --config ./config/webpack.config.js"
+    "start": "NODE_ENV=development webpack"
   },
   "dependencies": {
     "eslint": "^3.17.1",

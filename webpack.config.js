@@ -14,7 +14,8 @@ const commonConfig = {
   entry: './main.js',
   output: {
     path: path.relative(__dirname, 'build'),
-    filename: 'bundle.js',
+    filename: 'js/bundle.js',
+    publicPath: '/themes/oddbaby/build/',
   },
   module: {
     rules: [
@@ -25,6 +26,12 @@ const commonConfig = {
       },
       {
         test: /\.css$/,
+        use: ExtractTextPlugin.extract({
+          use: ['css-loader', 'postcss-loader'],
+        }),
+      },
+      {
+        test: /\.scss$/,
         use: ExtractTextPlugin.extract({
           use: ['css-loader', 'postcss-loader', 'sass-loader'],
         }),
@@ -46,7 +53,7 @@ const commonConfig = {
     ],
   },
   plugins: [
-    new ExtractTextPlugin('styles.css'),
+    new ExtractTextPlugin('css/[name].css'),
   ],
 };
 
@@ -55,10 +62,13 @@ const developmentConfig = {
   devtool: 'cheap-eval-source-map',
   watch: true,
   plugins: [
+    new webpack.DefinePlugin({
+      'process.env.NODE_ENV': JSON.stringify('development'),
+    }),
     new BrowserSyncPlugin({
       host: 'localhost',
       port: 3000,
-      proxy: 'sitename.dev',
+      proxy: 'drupal-reference.dev',
     }),
     new StyleLintPlugin({
       context: path.resolve(__dirname, '../src/scss'),
