@@ -5,6 +5,8 @@
  * Main file for the Odd Baby theme.
  */
 
+require_once __DIR__ . '/oddbaby.suggestions.inc';
+
 /**
  * Modifies non system css @imports to be added as link tags.
  *
