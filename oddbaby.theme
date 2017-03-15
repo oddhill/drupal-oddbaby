@@ -21,7 +21,7 @@ function oddbaby_css_alter(&$css) {
   // Modify all css imports except the core files since we don't need
   // Browser Sync to reload these files.
   foreach ($css as $key => $value) {
-    $is_core = (strpos($value['data'], 'misc/') === 0 || strpos($value['data'], 'modules/') === 0);
+    $is_core = (strpos($value['data'], 'misc/') === 0 || strpos($value['data'], 'modules/') === 0 || strpos($value['data'], 'core/') === 0);
 
     if (!$is_core) {
       $css[$key]['preprocess'] = FALSE;
