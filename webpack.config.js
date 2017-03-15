@@ -20,6 +20,9 @@ const commonConfig = {
     path: path.resolve(__dirname, 'build'),
     filename: 'js/bundle.js',
   },
+  externals: {
+    jquery: 'jQuery',
+  },
   module: {
     rules: [
       {
