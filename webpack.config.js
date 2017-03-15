@@ -10,12 +10,11 @@ const StyleLintPlugin = require('stylelint-webpack-plugin');
 
 // Shared configuration.
 const commonConfig = {
-  context: path.resolve(__dirname, '../src'),
+  context: path.resolve(__dirname, './src'),
   entry: './main.js',
   output: {
-    path: path.relative(__dirname, 'build'),
+    path: path.resolve(__dirname, 'build'),
     filename: 'js/bundle.js',
-    publicPath: '/themes/oddbaby/build/',
   },
   module: {
     rules: [
@@ -81,7 +80,7 @@ const productionConfig = {
   devtool: 'source-map',
   plugins: [
     new webpack.DefinePlugin({
-      'process.env.NODE_ENV': JSON.stringify('production')
+      'process.env.NODE_ENV': JSON.stringify('production'),
     }),
     new webpack.LoaderOptionsPlugin({
       minimize: true,
