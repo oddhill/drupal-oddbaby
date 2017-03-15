@@ -8,6 +8,10 @@ const BrowserSyncPlugin = require('browser-sync-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const StyleLintPlugin = require('stylelint-webpack-plugin');
 
+const ExtractMainSass = new ExtractTextPlugin('css/main.css');
+const ExtractCkeditorSass = new ExtractTextPlugin('css/ckeditor.css');
+const ExtractPrintSass = new ExtractTextPlugin('css/print.css');
+
 // Shared configuration.
 const commonConfig = {
   context: path.resolve(__dirname, './src'),
@@ -25,13 +29,23 @@ const commonConfig = {
       },
       {
         test: /\.css$/,
-        use: ExtractTextPlugin.extract({
-          use: ['css-loader', 'postcss-loader'],
+        use: 'css-loader',
+      },
+      {
+        test: /ckeditor\.scss$/,
+        use: ExtractCkeditorSass.extract({
+          use: ['css-loader', 'postcss-loader', 'sass-loader'],
         }),
       },
       {
-        test: /\.scss$/,
-        use: ExtractTextPlugin.extract({
+        test: /main\.scss$/,
+        use: ExtractMainSass.extract({
+          use: ['css-loader', 'postcss-loader', 'sass-loader'],
+        }),
+      },
+      {
+        test: /print\.scss$/,
+        use: ExtractPrintSass.extract({
           use: ['css-loader', 'postcss-loader', 'sass-loader'],
         }),
       },
@@ -52,7 +66,9 @@ const commonConfig = {
     ],
   },
   plugins: [
-    new ExtractTextPlugin('css/[name].css'),
+    ExtractCkeditorSass,
+    ExtractMainSass,
+    ExtractPrintSass,
   ],
 };
 
@@ -70,7 +86,7 @@ const developmentConfig = {
       proxy: 'drupal-reference.dev',
     }),
     new StyleLintPlugin({
-      context: path.resolve(__dirname, '../src/scss'),
+      context: path.resolve(__dirname, './src/scss'),
     }),
   ],
 };
