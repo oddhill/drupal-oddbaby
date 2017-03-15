@@ -1,0 +1,11 @@
+global:
+  css:
+    theme:
+      build/css/main.css: {}
+      build/css/print.css: { media: print }
+  js:
+    build/js/bundle.js: { minified: true }
+  dependencies:
+    - core/jquery
+    - core/drupal
+    - core/drupalSettings
