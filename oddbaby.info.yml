@@ -1,0 +1,14 @@
+name: Oddbaby
+type: theme
+core: 8.x
+
+regions:
+  header: Header
+  content: Content
+  footer: Footer
+
+libraries:
+  - oddbaby/global
+
+ckeditor_stylesheets:
+  - build/css/ckeditor.css
