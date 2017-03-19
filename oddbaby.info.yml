@@ -9,6 +9,8 @@ regions:
 
 libraries:
   - oddbaby/global
+  - oddbaby/font.source-sans-pro
+  - oddbaby/icons.font-awesome
 
 ckeditor_stylesheets:
   - build/css/ckeditor.css

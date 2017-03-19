@@ -9,3 +9,18 @@ global:
     - core/jquery
     - core/drupal
     - core/drupalSettings
+
+# External font from google fonts.
+font.source-sans-pro:
+  remote: https://fonts.google.com/specimen/Source+Sans+Pro
+  license: Open Font License
+  css:
+    theme:
+      https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700: { external: true, minified: true }
+
+# External icons from font awesome.
+icons.font-awesome:
+  remote: http://fontawesome.io/
+  license: Open Font License
+  js:
+    https://use.fontawesome.com/e87ab3b287.js: { external: true, minified: true }
