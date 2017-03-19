@@ -1,0 +1,21 @@
+@import '../variables';
+
+// Styling for status messages.
+
+.status-messages {
+  &--error {
+    color: red;
+  }
+
+  &--status {
+    color: green;
+  }
+
+  &--warning {
+    color: orange;
+  }
+}
+
+// .status-messages__list {}
+
+// .status-messages__list-item {}

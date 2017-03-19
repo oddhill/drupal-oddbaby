@@ -1,0 +1,68 @@
+{#
+/**
+ * @file
+ * Default theme implementation for status messages.
+ *
+ * Displays status, error, and warning messages, grouped by type.
+ *
+ * An invisible heading identifies the messages for assistive technology.
+ * Sighted users see a colored box. See http://www.w3.org/TR/WCAG-TECHS/H69.html
+ * for info.
+ *
+ * Add an ARIA label to the contentinfo area so that assistive technology
+ * user agents will better describe this landmark.
+ *
+ * Available variables:
+ * - message_list: List of messages to be displayed, grouped by type.
+ * - status_headings: List of all status types.
+ * - display: (optional) May have a value of 'status' or 'error' when only
+ *   displaying messages of that specific type.
+ * - attributes: HTML attributes for the element, including:
+ *   - class: HTML classes.
+ *
+ * @ingroup themeable
+ */
+#}
+{% if message_list %}
+  {% for type, messages in message_list %}
+    {#
+      This is a bit wonky, but we have to remove the class attribute on each
+      itteration to net get duplicate class names and then add back the
+      current type as a class.
+    #}
+    {%
+      set type_class = [
+        'status-messages',
+        'status-messages--' + type,
+      ];
+
+      set type_attributes = attributes.removeAttribute('class').addClass(type_class)
+    %}
+
+    <div role="contentinfo" aria-label="{{ status_headings[type] }}"{{ type_attributes|without('role', 'aria-label') }}>
+      {% if type == 'error' %}
+        <div role="alert">
+      {% endif %}
+
+        {% if status_headings[type] %}
+          <h2 class="visually-hidden">{{ status_headings[type] }}</h2>
+        {% endif %}
+
+        {% if messages|length > 1 %}
+          <ul class="status-messages__list">
+            {% for message in messages %}
+              <li class="status-messages__list-item">
+                {{ message }}
+              </li>
+            {% endfor %}
+          </ul>
+        {% else %}
+          {{ messages|first }}
+        {% endif %}
+
+      {% if type == 'error' %}
+        </div>
+      {% endif %}
+    </div>
+  {% endfor %}
+{% endif %}
