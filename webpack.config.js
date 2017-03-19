@@ -84,9 +84,12 @@ const developmentConfig = {
       'process.env.NODE_ENV': JSON.stringify('development'),
     }),
     new BrowserSyncPlugin({
+      files: './build/css/*.css',
       host: 'localhost',
       port: 3000,
       proxy: 'drupal-reference.dev',
+    }, {
+      reload: false,
     }),
     new StyleLintPlugin({
       context: path.resolve(__dirname, './src/scss'),
