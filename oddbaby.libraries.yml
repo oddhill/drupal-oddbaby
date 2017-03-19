@@ -1,7 +1,8 @@
+# Base CSS, Javascript and dependencies.
 global:
   css:
     theme:
-      build/css/main.css: {}
+      build/css/main.css: { minified: true }
       build/css/print.css: { media: print }
   js:
     build/js/bundle.js: { minified: true }
