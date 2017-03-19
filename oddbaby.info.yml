@@ -8,9 +8,9 @@ regions:
   footer: Footer
 
 libraries:
-  - oddbaby/global
   - oddbaby/font.source-sans-pro
   - oddbaby/icons.font-awesome
+  - oddbaby/global
 
 ckeditor_stylesheets:
   - build/css/ckeditor.css
