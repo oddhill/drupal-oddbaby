@@ -1,16 +1,20 @@
 @import '../variables';
 
+$pager-padding: 20px;
 $pager-item-padding: 6px 12px;
 
 // Pagination styling.
 
-.pager {}
+.pager {
+  padding: $pager-padding;
+}
 
 .pager__items {
   display: flex;
   list-style: none;
   margin: 0;
   padding: 0;
+  justify-content: center;
 
   &--center {
     justify-content: center;
@@ -18,11 +22,11 @@ $pager-item-padding: 6px 12px;
 }
 
 .pager__link {
+  display: block;
   padding: $pager-item-padding;
 }
 
 .pager__item {
-
   &--ellipsis {
     padding: $pager-item-padding;
   }
@@ -31,13 +35,7 @@ $pager-item-padding: 6px 12px;
     color: darken($color-white, 25%);
   }
 
-  &--first {}
-  &--previous {}
-
   &--current {
     color: $color-black;
   }
-
-  &--next {}
-  &--last {}
 }
