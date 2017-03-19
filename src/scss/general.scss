@@ -2,7 +2,10 @@
 
 html,
 body {
-  color: $color-charcoal;
+  color: $default-font-color;
+  font-family: $default-font-family;
+  font-size: $default-font-size;
+  font-weight: $default-font-weight;
 }
 
 
