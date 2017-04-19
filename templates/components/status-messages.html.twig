@@ -34,10 +34,10 @@
       set type_class = [
         'status-messages',
         'status-messages--' + type,
-      ];
-
-      set type_attributes = attributes.removeAttribute('class').addClass(type_class)
+      ]
     %}
+
+    {% set type_attributes = attributes.removeAttribute('class').addClass(type_class) %}
 
     <div role="contentinfo" aria-label="{{ status_headings[type] }}"{{ type_attributes|without('role', 'aria-label') }}>
       {% if type == 'error' %}
