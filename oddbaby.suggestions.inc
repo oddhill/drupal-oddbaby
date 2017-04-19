@@ -6,7 +6,7 @@
  */
 
 /**
- * Adds additional theme suggestions for field templates.
+ * Adds theme suggestions for field templates.
  *
  * Implements hook_theme_suggestions_HOOK().
  */
@@ -26,8 +26,7 @@ function oddbaby_theme_suggestions_field_alter(array &$suggestions, array $varia
 }
 
 /**
- * Adds additional theme suggestions for the page title based on the
- * current route.
+ * Adds theme suggestions for the page title based on the current route.
  *
  * Implements hook_theme_suggestions_HOOK_alter().
  */
@@ -43,7 +42,7 @@ function oddbaby_theme_suggestions_page_title_alter(array &$suggestions) {
 }
 
 /**
- * Adds additional theme suggestions for taxonomy term templates.
+ * Adds theme suggestions for taxonomy term templates.
  *
  * Implements hook_theme_suggestions_HOOK().
  */
@@ -58,7 +57,7 @@ function oddbaby_theme_suggestions_taxonomy_term_alter(array &$suggestions, arra
 }
 
 /**
- * Adds additional theme suggestions for view templates.
+ * Adds theme suggestions for view templates.
  *
  * Implements hook_theme_suggestions_HOOK_alter().
  */
@@ -72,7 +71,7 @@ function oddbaby_theme_suggestions_views_view_alter(array &$suggestions, array $
 }
 
 /**
- * Adds additional theme suggestions for the unformatted view template.
+ * Adds theme suggestions for the unformatted view template.
  *
  * Implements hook_theme_suggestions_HOOK_alter().
  */
