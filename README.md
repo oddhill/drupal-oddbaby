@@ -9,7 +9,8 @@ Base for creating new themes for Drupal 8+ sites.
 
 ## Installing
 
-Start by downloading the project either as a zip-file or cloring it through git then navigate to the project in your terminal and write the following command.
+Start by downloading the project either as a zip-file or cloring it through git
+then navigate to the project in your terminal and write the following command.
 
 ```
 yarn install
