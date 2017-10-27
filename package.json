@@ -9,6 +9,7 @@
   "scripts": {
     "start": "NODE_ENV=development webpack",
     "build": "NODE_ENV=production webpack",
+    "eslint": "eslint ./src",
     "stylelint": "stylelint ./src/scss/**/*.scss"
   },
   "dependencies": {
