@@ -6,7 +6,6 @@ const webpack = require('webpack');
 
 const BrowserSyncPlugin = require('browser-sync-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
-const StyleLintPlugin = require('stylelint-webpack-plugin');
 
 const ExtractMainSass = new ExtractTextPlugin('css/main.css');
 const ExtractCkeditorSass = new ExtractTextPlugin('css/ckeditor.css');
@@ -90,9 +89,6 @@ const developmentConfig = {
       proxy: 'drupal-reference.dev',
     }, {
       reload: false,
-    }),
-    new StyleLintPlugin({
-      context: path.resolve(__dirname, './src/scss'),
     }),
   ],
 };
