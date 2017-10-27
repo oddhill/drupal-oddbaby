@@ -4,7 +4,6 @@ const merge = require('webpack-merge');
 const path = require('path');
 const webpack = require('webpack');
 
-const BrowserSyncPlugin = require('browser-sync-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 const ExtractMainSass = new ExtractTextPlugin('css/main.css');
@@ -81,14 +80,6 @@ const developmentConfig = {
   plugins: [
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': JSON.stringify('development'),
-    }),
-    new BrowserSyncPlugin({
-      files: './build/css/*.css',
-      host: 'localhost',
-      port: 3000,
-      proxy: 'drupal-reference.dev',
-    }, {
-      reload: false,
     }),
   ],
 };
