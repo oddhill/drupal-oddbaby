@@ -7,7 +7,8 @@
   "author": "Christoffer Palm <christoffer.palm@oddhill.se>",
   "license": "MIT",
   "scripts": {
-    "start": "NODE_ENV=development webpack"
+    "start": "NODE_ENV=development webpack",
+    "build": "NODE_ENV=production webpack"
   },
   "dependencies": {
     "normalize.css": "^7.0.0"
