@@ -51,17 +51,21 @@ const commonConfig = {
         }),
       },
       {
-        test: /\.(ttf|eot|woff|woff2)$/,
-        loader: 'file-loader',
+        test: /\.(ttf|eot|woff|woff2|svg)$/,
+        exclude: /graphics/,
+        use: 'file-loader',
         options: {
           name: 'fonts/[name].[ext]',
+          publicPath: '../',
         },
       },
       {
         test: /\.(jpg|png|svg)$/,
-        loader: 'file-loader',
+        exclude: /fonts/,
+        use: 'file-loader',
         options: {
           name: 'graphics/[hash].[ext]',
+          publicPath: '../',
         },
       },
     ],
