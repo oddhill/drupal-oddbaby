@@ -1,27 +1,34 @@
-oddbaby.small:
-  label: breakpoint-small
-  mediaQuery: '(min-width: 576px)'
+oddbaby.mobile:
+  label: Mobile
+  mediaQuery: 'all and (max-width: 599px)'
   weight: 0
   multipliers:
     - 1x
 
-oddbaby.medium:
-  label: breakpoint-medium
-  mediaQuery: '(min-width: 768px)'
+oddbaby.tablet:
+  label: Tablet
+  mediaQuery: 'all and (min-width: 600px)'
   weight: 1
   multipliers:
     - 1x
 
-oddbaby.large:
-  label: breakpoint-large
-  mediaQuery: '(min-width: 992px)'
+oddbaby.tablet_landscape:
+  label: Tablet (Landscape)
+  mediaQuery: 'all and (min-width: 900px)'
   weight: 2
   multipliers:
     - 1x
 
-oddbaby.xlarge:
-  label: breakpoint-xlarge
-  mediaQuery: '(min-width: 1200px)'
+oddbaby.desktop:
+  label: Desktop
+  mediaQuery: 'all and (min-width: 1200px)'
   weight: 3
+  multipliers:
+    - 1x
+
+oddbaby.desktop_large:
+  label: Desktop (Large)
+  mediaQuery: 'all and (min-width: 1800px)'
+  weight: 4
   multipliers:
     - 1x
