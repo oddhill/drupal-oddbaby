@@ -53,7 +53,7 @@ const commonConfig = {
       {
         test: /\.(ttf|eot|woff|woff2|svg)$/,
         exclude: /graphics/,
-        use: 'file-loader',
+        loader: 'file-loader',
         options: {
           name: 'fonts/[name].[ext]',
           publicPath: '../',
@@ -62,7 +62,7 @@ const commonConfig = {
       {
         test: /\.(jpg|png|svg)$/,
         exclude: /fonts/,
-        use: 'file-loader',
+        loader: 'file-loader',
         options: {
           name: 'graphics/[hash].[ext]',
           publicPath: '../',
