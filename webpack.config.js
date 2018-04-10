@@ -77,26 +77,11 @@ const commonConfig = {
 const developmentConfig = {
   devtool: 'cheap-eval-source-map',
   watch: true,
-  plugins: [
-    new webpack.DefinePlugin({
-      'process.env.NODE_ENV': JSON.stringify('development'),
-    }),
-  ],
 };
 
 // Production configuration.
 const productionConfig = {
   devtool: 'source-map',
-  plugins: [
-    new webpack.DefinePlugin({
-      'process.env.NODE_ENV': JSON.stringify('production'),
-    }),
-    new webpack.LoaderOptionsPlugin({
-      minimize: true,
-      debug: false,
-    }),
-    new webpack.optimize.UglifyJsPlugin({}),
-  ],
 };
 
 // Export config based on the current environment.
