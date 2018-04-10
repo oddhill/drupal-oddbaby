@@ -12,7 +12,7 @@ const ExtractPrintSass = new ExtractTextPlugin('css/print.css');
 // Shared configuration.
 const commonConfig = {
   context: path.resolve(__dirname, './src'),
-  entry: './main.js',
+  entry: './js/main.js',
   output: {
     path: path.resolve(__dirname, 'build'),
     filename: 'js/bundle.js',
