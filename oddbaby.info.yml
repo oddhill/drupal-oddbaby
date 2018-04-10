@@ -7,6 +7,11 @@ regions:
   content: Content
   footer: Footer
 
+component-libraries:
+  oddbaby-components:
+    paths:
+      - components
+
 libraries:
   - oddbaby/font.source-sans-pro
   - oddbaby/icons.font-awesome
