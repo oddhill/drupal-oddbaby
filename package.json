@@ -12,15 +12,16 @@
     "eslint": "eslint ./src",
     "stylelint": "stylelint ./src/scss/**/*.scss"
   },
+  "browserslist": "last 2 versions",
   "dependencies": {
     "babel-polyfill": "^6.26.0",
     "normalize.css": "^8.0.0"
   },
   "devDependencies": {
+    "@babel/core": "^7.0.0-beta",
+    "@babel/preset-env": "^7.0.0-beta",
     "autoprefixer": "^8.2.0",
-    "babel-core": "^6.26.0",
-    "babel-loader": "^7.1.2",
-    "babel-preset-env": "^1.6.1",
+    "babel-loader": "^8.0.0-beta.2",
     "css-loader": "^0.28.7",
     "eslint": "^4.9.0",
     "eslint-config-airbnb-base": "^12.1.0",
