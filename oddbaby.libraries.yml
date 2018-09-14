@@ -23,5 +23,11 @@ font.source-sans-pro:
 icons.font-awesome:
   remote: http://fontawesome.io/
   license: Open Font License
-  js:
-    https://use.fontawesome.com/e87ab3b287.js: { external: true, minified: true }
+  css:
+    theme:
+      https://use.fontawesome.com/releases/v5.3.1/css/all.css:
+        external: true
+        minified: true
+        attributes:
+          crossorigin: anonymous
+          integrity: sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU
