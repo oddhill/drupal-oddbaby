@@ -13,7 +13,7 @@ const commonConfig = {
   entry: './js/main.js',
   output: {
     path: path.resolve(__dirname, 'build'),
-    filename: 'js/bundle.js',
+    filename: 'js/[name].js',
   },
   externals: {
     jquery: 'jQuery',
