@@ -4,6 +4,8 @@ const merge = require('webpack-merge');
 const path = require('path');
 
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 
 // Shared configuration.
 const commonConfig = {
@@ -55,7 +57,7 @@ const commonConfig = {
   plugins: [
     new MiniCssExtractPlugin({
       filename: 'css/[name].css',
-      chunkFilename: 'css/[id].css',
+      chunkFilename: 'css/[name].css',
     }),
   ],
   optimization: {
@@ -95,6 +97,16 @@ const developmentConfig = {
 const productionConfig = {
   mode: 'production',
   devtool: 'source-map',
+  optimization: {
+    minimizer: [
+      new UglifyJsPlugin({
+        cache: true,
+        parallel: true,
+        sourceMap: true,
+      }),
+      new OptimizeCSSAssetsPlugin(),
+    ],
+  },
 };
 
 // Export config based on the current environment.
