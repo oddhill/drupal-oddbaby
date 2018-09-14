@@ -12,7 +12,7 @@
     "eslint": "eslint ./src",
     "stylelint": "stylelint ./src/scss/**/*.scss"
   },
-  "browserslist": "last 2 versions",
+  "browserslist": "defaults",
   "dependencies": {
     "@babel/polyfill": "^7.0.0",
     "normalize.css": "^8.0.0"
