@@ -3,11 +3,7 @@
 const merge = require('webpack-merge');
 const path = require('path');
 
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
-
-const ExtractMainSass = new ExtractTextPlugin('css/main.css');
-const ExtractCkeditorSass = new ExtractTextPlugin('css/ckeditor.css');
-const ExtractPrintSass = new ExtractTextPlugin('css/print.css');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 // Shared configuration.
 const commonConfig = {
@@ -28,26 +24,13 @@ const commonConfig = {
         use: 'babel-loader',
       },
       {
-        test: /\.css$/,
-        use: 'css-loader',
-      },
-      {
-        test: /ckeditor\.scss$/,
-        use: ExtractCkeditorSass.extract({
-          use: ['css-loader', 'postcss-loader', 'sass-loader'],
-        }),
-      },
-      {
-        test: /main\.scss$/,
-        use: ExtractMainSass.extract({
-          use: ['css-loader', 'postcss-loader', 'sass-loader'],
-        }),
-      },
-      {
-        test: /print\.scss$/,
-        use: ExtractPrintSass.extract({
-          use: ['css-loader', 'postcss-loader', 'sass-loader'],
-        }),
+        test: /\.(sc|c)ss$/,
+        use: [
+          MiniCssExtractPlugin.loader,
+          'css-loader',
+          'postcss-loader',
+          'sass-loader',
+        ],
       },
       {
         test: /\.(ttf|eot|woff|woff2|svg)$/,
@@ -70,20 +53,47 @@ const commonConfig = {
     ],
   },
   plugins: [
-    ExtractCkeditorSass,
-    ExtractMainSass,
-    ExtractPrintSass,
+    new MiniCssExtractPlugin({
+      filename: 'css/[name].css',
+      chunkFilename: 'css/[id].css',
+    }),
   ],
+  optimization: {
+    splitChunks: {
+      cacheGroups: {
+        print: {
+          name: 'print',
+          test: /print\.scss$/,
+          chunks: 'initial',
+          enforce: true,
+        },
+        main: {
+          name: 'main',
+          test: /main\.scss$/,
+          chunks: 'initial',
+          enforce: true,
+        },
+        ckeditor: {
+          name: 'ckeditor',
+          test: /ckeditor\.scss$/,
+          chunks: 'initial',
+          enforce: true,
+        },
+      },
+    },
+  },
 };
 
 // Development configuration.
 const developmentConfig = {
+  mode: 'development',
   devtool: 'cheap-eval-source-map',
   watch: true,
 };
 
 // Production configuration.
 const productionConfig = {
+  mode: 'production',
   devtool: 'source-map',
 };
 
