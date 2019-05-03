@@ -6,6 +6,8 @@ global:
       build/css/print.css: { media: print }
   js:
     build/js/main.js: { minified: true }
+    build/js/ckeditor.js: { minified: true }
+    build/js/print.js: { minified: true }
   dependencies:
     - core/jquery
     - core/drupal
