@@ -16,6 +16,7 @@
   },
   "browserslist": "defaults",
   "dependencies": {
+    "bootstrap": "^4.3.1",
     "core-js": "^3.2.1",
     "normalize.css": "^8.0.0",
     "regenerator-runtime": "^0.13.3"

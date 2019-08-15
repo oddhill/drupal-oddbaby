@@ -10,6 +10,13 @@ $breakpoints: (
   desktop-large: 1800px,
 ) !default;
 
+// Bootstrap
+//
+// This configures the breakpoints for usage with the bootstrap responsive
+// mixins.
+
+$grid-breakpoints: $breakpoints;
+
 // Colors.
 
 $color-black: #000;
