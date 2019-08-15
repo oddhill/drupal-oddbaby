@@ -16,12 +16,13 @@
   },
   "browserslist": "defaults",
   "dependencies": {
-    "@babel/polyfill": "^7.0.0",
-    "normalize.css": "^8.0.0"
+    "core-js": "^3.2.1",
+    "normalize.css": "^8.0.0",
+    "regenerator-runtime": "^0.13.3"
   },
   "devDependencies": {
-    "@babel/core": "^7.0.0",
-    "@babel/preset-env": "^7.0.0",
+    "@babel/core": "^7.5.0",
+    "@babel/preset-env": "^7.5.0",
     "autoprefixer": "^9.0.0",
     "babel-loader": "^8.0.0",
     "css-loader": "^1.0.0",
