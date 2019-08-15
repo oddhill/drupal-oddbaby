@@ -11,10 +11,10 @@ $pager-item-padding: 6px 12px;
 
 .pager__items {
   display: flex;
+  justify-content: center;
   list-style: none;
   margin: 0;
   padding: 0;
-  justify-content: center;
 
   &--center {
     justify-content: center;

@@ -4,15 +4,21 @@
 
 .status-messages {
   &--error {
-    color: red;
+    background: #f8d7da;
+    border: 1px solid #f5c6cb;
+    color: #721c24;
   }
 
   &--status {
-    color: green;
+    background: #cce5ff;
+    border: 1px solid #b8daff;
+    color: #004085;
   }
 
   &--warning {
-    color: orange;
+    background: #fff3cd;
+    border: 1px solid #ffeeba;
+    color: #856404;
   }
 }
 

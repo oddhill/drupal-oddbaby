@@ -34,7 +34,7 @@
 //    767.98px
 @function get-breakpoint-max-width($name, $breakpoints: $breakpoints) {
   $next: breakpoint-next($name, $breakpoints);
-  @return if($next, get-breakpoint-min-width($next, $breakpoints) - .02px, null);
+  @return if($next, get-breakpoint-min-width($next, $breakpoints) - 0.02px, null);
 }
 
 // Wrap styling for the specified breakpoint and up, will not apply a media
