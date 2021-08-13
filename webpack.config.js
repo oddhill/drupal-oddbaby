@@ -10,7 +10,11 @@ const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 // Shared configuration.
 const commonConfig = {
   context: path.resolve(__dirname, './src'),
-  entry: './js/main.js',
+  entry: {
+    main: ['./js/main.js', './scss/main.scss'],
+    ckeditor: './scss/ckeditor.scss',
+    print: './scss/print.scss',
+  },
   output: {
     path: path.resolve(__dirname, 'build'),
     filename: 'js/[name].js',
@@ -60,30 +64,30 @@ const commonConfig = {
       chunkFilename: 'css/[name].css',
     }),
   ],
-  optimization: {
-    splitChunks: {
-      cacheGroups: {
-        print: {
-          name: 'print',
-          test: /print\.scss$/,
-          chunks: 'initial',
-          enforce: true,
-        },
-        main: {
-          name: 'main',
-          test: /main\.scss$/,
-          chunks: 'initial',
-          enforce: true,
-        },
-        ckeditor: {
-          name: 'ckeditor',
-          test: /ckeditor\.scss$/,
-          chunks: 'initial',
-          enforce: true,
-        },
-      },
-    },
-  },
+  // optimization: {
+  //   splitChunks: {
+  //     cacheGroups: {
+  //       print: {
+  //         name: 'print',
+  //         test: /print\.scss$/,
+  //         chunks: 'initial',
+  //         enforce: true,
+  //       },
+  //       main: {
+  //         name: 'main',
+  //         test: /main\.scss$/,
+  //         chunks: 'initial',
+  //         enforce: true,
+  //       },
+  //       ckeditor: {
+  //         name: 'ckeditor',
+  //         test: /ckeditor\.scss$/,
+  //         chunks: 'initial',
+  //         enforce: true,
+  //       },
+  //     },
+  //   },
+  // },
 };
 
 // Development configuration.
