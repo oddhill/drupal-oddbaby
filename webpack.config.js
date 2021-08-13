@@ -1,6 +1,6 @@
 /* eslint-env node, es6 */
 
-const merge = require('webpack-merge');
+const { merge } = require('webpack-merge');
 const path = require('path');
 
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
