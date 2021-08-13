@@ -64,30 +64,6 @@ const commonConfig = {
       chunkFilename: 'css/[name].css',
     }),
   ],
-  // optimization: {
-  //   splitChunks: {
-  //     cacheGroups: {
-  //       print: {
-  //         name: 'print',
-  //         test: /print\.scss$/,
-  //         chunks: 'initial',
-  //         enforce: true,
-  //       },
-  //       main: {
-  //         name: 'main',
-  //         test: /main\.scss$/,
-  //         chunks: 'initial',
-  //         enforce: true,
-  //       },
-  //       ckeditor: {
-  //         name: 'ckeditor',
-  //         test: /ckeditor\.scss$/,
-  //         chunks: 'initial',
-  //         enforce: true,
-  //       },
-  //     },
-  //   },
-  // },
 };
 
 // Development configuration.
