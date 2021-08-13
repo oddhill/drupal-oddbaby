@@ -5,7 +5,7 @@ const path = require('path');
 
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
-const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+const TerserPlugin = require('terser-webpack-plugin');
 
 // Shared configuration.
 const commonConfig = {
@@ -78,14 +78,8 @@ const productionConfig = {
   mode: 'production',
   devtool: 'source-map',
   optimization: {
-    minimizer: [
-      new UglifyJsPlugin({
-        cache: true,
-        parallel: true,
-        sourceMap: true,
-      }),
-      new OptimizeCSSAssetsPlugin(),
-    ],
+    minimize: true,
+    minimizer: [new TerserPlugin(), new OptimizeCSSAssetsPlugin()],
   },
 };
 
