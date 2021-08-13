@@ -69,7 +69,7 @@ const commonConfig = {
 // Development configuration.
 const developmentConfig = {
   mode: 'development',
-  devtool: 'cheap-eval-source-map',
+  devtool: 'eval-source-map',
   watch: true,
 };
 
