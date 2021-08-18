@@ -6,6 +6,9 @@
   "repository": "https://www.github.com/oddhill/drupal-oddbaby",
   "author": "Christoffer Palm <christoffer.palm@oddhill.se>",
   "license": "MIT",
+  "engines": {
+    "node": "12.*"
+  },
   "scripts": {
     "start": "NODE_ENV=development webpack",
     "build": "NODE_ENV=production webpack",
