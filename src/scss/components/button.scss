@@ -1,6 +1,7 @@
-// Button styling
+@use '../variables/default';
 
-@import '../variables';
+$button-primary-background-color: #282828;
+$button-secondary-background-color: #eee;
 
 .button {
   display: inline-block;
@@ -12,7 +13,7 @@
 }
 
 .button--rounded {
-  border-radius: $default-border-radius;
+  border-radius: default.$border-radius;
 }
 
 .button--primary {

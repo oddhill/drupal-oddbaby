@@ -1,13 +1,13 @@
 // General styling
 
-@import 'variables';
+@use '../variables/default';
 
 html,
 body {
-  color: $default-font-color;
-  font-family: $default-font-family;
-  font-size: $default-font-size;
-  font-weight: $default-font-weight;
+  color: default.$font-color;
+  font-family: default.$font-family;
+  font-size: default.$font-size;
+  font-weight: default.$font-weight;
 }
 
 body {

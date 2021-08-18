@@ -1,16 +1,24 @@
 // Main
 
 // Import external styling
-@import '~normalize.css/normalize.css';
+
+@use 'normalize.css/normalize';
 
 // Import general styling
-@import './general';
-@import './typography';
+
+@use './general/general';
+@use './general/legible';
 
 // Import component styling
-@import './components/button';
-@import './components/pagination';
+
+@use './components/breadcrumb';
+@use './components/button-group';
+@use './components/button';
+@use './components/pagination';
+@use './components/status-message';
+@use './components/text';
 
 // Import media styling
-@import './media/image';
-@import './media/video';
+
+@use './media/image';
+@use './media/video';

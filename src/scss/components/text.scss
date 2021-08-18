@@ -1,29 +1,7 @@
-// Typographic styling
-
-@import 'variables';
-
-// Headings.
-
-// h1,
-// h2,
-// h3,
-// h4,
-// h5,
-// h6 {}
-
-// h1 {}
-
-// h2 {}
-
-// h3 {}
-
-// h4 {}
-
-// h5 {}
-
-// h6 {}
-
-// Text layout and formatting.
+// Text
+//
+// Used for styling small blocks of text. Mainly used as a utility class and
+// should only be used if no other styling is required for the element.
 
 .text {
   display: block;

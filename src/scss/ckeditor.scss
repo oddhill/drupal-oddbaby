@@ -7,12 +7,4 @@
 // styling.
 
 // Import external styling.
-@import '~normalize.css/normalize.css';
-
-// Import our own styling for editor content.
-@import 'typography';
-@import 'media/image';
-@import 'media/video';
-
-// Define any custom styling here if you need to style som element
-// specifically for use in the CKEditor WYSIWYG.
+@use 'normalize.css/normalize';

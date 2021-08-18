@@ -1,0 +1,14 @@
+// Default variables
+
+@use './color';
+
+// Borders
+
+$border-radius: 3px;
+
+// Fonts
+
+$font-color: color.$charcoal;
+$font-family: 'Source Sans Pro', sans-serif;
+$font-size: 16px;
+$font-weight: 400;

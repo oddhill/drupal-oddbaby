@@ -32,8 +32,8 @@
     #}
     {%
       set type_class = [
-        'status-messages',
-        'status-messages--' ~ type,
+        'status-message',
+        'status-message--' ~ type,
       ]
     %}
 
@@ -49,9 +49,9 @@
         {% endif %}
 
         {% if messages|length > 1 %}
-          <ul class="status-messages__list">
+          <ul class="status-message__list">
             {% for message in messages %}
-              <li class="status-messages__list-item">
+              <li class="status-message__list-item">
                 {{ message }}
               </li>
             {% endfor %}
