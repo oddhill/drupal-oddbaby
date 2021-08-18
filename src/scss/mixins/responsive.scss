@@ -8,9 +8,6 @@
 
 @use '../variables/responsive';
 
-// This configures the breakpoints for usage with the bootstrap responsive
-// mixins.
-
-$grid-breakpoints: $breakpoints;
-
-@use 'bootstrap/scss/mixins/breakpoints';
+@use 'bootstrap/scss/mixins/breakpoints' with (
+  $grid-breakpoints: $breakpoints
+);
