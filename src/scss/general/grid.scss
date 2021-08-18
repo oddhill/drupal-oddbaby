@@ -1,0 +1,21 @@
+// Grid
+//
+// This imports the grid functionality from bootstraps and generates classes
+// based on the specified container max widths and breakpoints.
+//
+// Read the boostrap documentation for more information on how to customize
+// the grid.
+//
+// https://getbootstrap.com/docs/5.0/layout/grid/#customizing-the-grid
+
+@use '../variables/responsive';
+
+@use 'bootstrap/scss/bootstrap-grid' with (
+  $container-max-widths: (
+    tablet: 568px,
+    tablet-landscape: 858px,
+    desktop: 1136px,
+    desktop-large: 1720px,
+  ),
+  $grid-breakpoints: responsive.$breakpoints,
+);

@@ -10,6 +10,14 @@
 @use './general/legible';
 
 // Import component styling
+// Optional styling
+//
+// The optional styling is generally not needed so its commented out by
+// default. Remove the comments from the things that you would like
+// to include.
+
+// @use './general/grid';
+
 
 @use './components/breadcrumb';
 @use './components/button-group';
