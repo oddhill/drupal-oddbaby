@@ -1,15 +1,17 @@
-// Main
-
-// Import external styling
+// External styling
+//
+// Styling from external packages.
 
 @use 'normalize.css/normalize';
 
-// Import general styling
+// General styling
+//
+// The general styling includes things like global styling or very specific
+// styling that does not really fit in to any of the other sections.
 
 @use './general/general';
 @use './general/legible';
 
-// Import component styling
 // Optional styling
 //
 // The optional styling is generally not needed so its commented out by
@@ -18,6 +20,7 @@
 
 // @use './general/grid';
 
+// Component styling
 
 @use './components/breadcrumb';
 @use './components/button-group';
@@ -26,7 +29,11 @@
 @use './components/status-message';
 @use './components/text';
 
-// Import media styling
+// Content styling
+
+@use './content/page';
+
+// Media styling
 
 @use './media/image';
 @use './media/video';
