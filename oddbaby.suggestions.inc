@@ -1,5 +1,7 @@
 <?php
 
+use Drupal;
+
 /**
  * @file
  * This file contains additional theme suggestions added by the theme.
@@ -10,7 +12,7 @@
  *
  * Implements hook_theme_suggestions_HOOK().
  */
-function oddbaby_theme_suggestions_field_alter(array &$suggestions, array $variables) {
+function oddbaby_theme_suggestions_field_alter(array &$suggestions, array $variables): void {
   $element = $variables['element'];
 
   // Add the view mode to the field theme suggestion.
@@ -30,11 +32,11 @@ function oddbaby_theme_suggestions_field_alter(array &$suggestions, array $varia
  *
  * Implements hook_theme_suggestions_HOOK_alter().
  */
-function oddbaby_theme_suggestions_page_title_alter(array &$suggestions) {
+function oddbaby_theme_suggestions_page_title_alter(array &$suggestions): void {
   $path_args = [''];
 
-  if (!\Drupal::service('path.matcher')->isFrontPage()) {
-    $path_args = explode('/', ltrim(\Drupal::service('path.current')->getPath(), '/'));
+  if (!Drupal::service('path.matcher')->isFrontPage()) {
+    $path_args = explode('/', ltrim(Drupal::service('path.current')->getPath(), '/'));
   }
 
   $page_title_suggestions = theme_get_suggestions($path_args, 'page_title');
@@ -46,7 +48,7 @@ function oddbaby_theme_suggestions_page_title_alter(array &$suggestions) {
  *
  * Implements hook_theme_suggestions_HOOK().
  */
-function oddbaby_theme_suggestions_taxonomy_term_alter(array &$suggestions, array $variables) {
+function oddbaby_theme_suggestions_taxonomy_term_alter(array &$suggestions, array $variables): void {
   /** @var \Drupal\taxonomy\TermInterface $term */
   $term = $variables['elements']['#taxonomy_term'];
   $view_mode = $variables['elements']['#view_mode'];
@@ -61,7 +63,7 @@ function oddbaby_theme_suggestions_taxonomy_term_alter(array &$suggestions, arra
  *
  * Implements hook_theme_suggestions_HOOK_alter().
  */
-function oddbaby_theme_suggestions_views_view_alter(array &$suggestions, array $variables) {
+function oddbaby_theme_suggestions_views_view_alter(array &$suggestions, array $variables): void {
   /** @var \Drupal\views\ViewExecutable $view_executable */
   $view_executable = $variables['view'];
 
@@ -75,7 +77,7 @@ function oddbaby_theme_suggestions_views_view_alter(array &$suggestions, array $
  *
  * Implements hook_theme_suggestions_HOOK_alter().
  */
-function oddbaby_theme_suggestions_views_view_unformatted_alter(array &$suggestions, array $variables) {
+function oddbaby_theme_suggestions_views_view_unformatted_alter(array &$suggestions, array $variables): void {
   /** @var \Drupal\views\ViewExecutable $view */
   $view = $variables['view'];
 
@@ -86,7 +88,7 @@ function oddbaby_theme_suggestions_views_view_unformatted_alter(array &$suggesti
 /**
  * Implements hook_theme_suggestions_HOOK_alter().
  */
-function oddbaby_theme_suggestions_user_alter(array &$suggestions, array $variables) {
+function oddbaby_theme_suggestions_user_alter(array &$suggestions, array $variables): void {
   $element = $variables['elements'];
 
   // Add a theme suggestion to the user template with the view mode.
