@@ -13,9 +13,9 @@
     "start": "NODE_ENV=development webpack",
     "build": "NODE_ENV=production webpack",
     "eslint": "eslint ./src",
-    "eslint-ci": "eslint ./src --format junit -o ~/reports/eslint.xml",
+    "eslint-ci": "eslint ./src --format junit -o ./reports/eslint.xml",
     "stylelint": "stylelint ./src/scss/**/*.scss",
-    "stylelint-ci": "stylelint ./src/scss/**/*.scss --custom-formatter=./node_modules/stylelint-junit-formatter > ~/reports/stylelint.xml"
+    "stylelint-ci": "stylelint ./src/scss/**/*.scss --custom-formatter=./node_modules/stylelint-junit-formatter > ./reports/stylelint.xml"
   },
   "browserslist": "defaults",
   "dependencies": {
