@@ -5,6 +5,7 @@ const path = require('path');
 
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const RemoveEmptyScriptsPlugin = require('webpack-remove-empty-scripts');
 const TerserPlugin = require('terser-webpack-plugin');
 
 // Shared configuration.
@@ -63,6 +64,7 @@ const commonConfig = {
       filename: 'css/[name].css',
       chunkFilename: 'css/[name].css',
     }),
+    new RemoveEmptyScriptsPlugin(),
   ],
 };
 

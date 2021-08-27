@@ -22,7 +22,8 @@
     "bootstrap": "^5.1.0",
     "core-js": "^3.2.1",
     "normalize.css": "^8.0.0",
-    "regenerator-runtime": "^0.13.3"
+    "regenerator-runtime": "^0.13.3",
+    "webpack-remove-empty-scripts": "^0.7.1"
   },
   "devDependencies": {
     "@babel/core": "^7.5.0",
