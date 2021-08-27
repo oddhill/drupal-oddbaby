@@ -41,18 +41,18 @@ const commonConfig = {
       {
         test: /\.(ttf|eot|woff|woff2|svg)$/,
         exclude: /graphics/,
-        loader: 'file-loader',
-        options: {
-          name: 'fonts/[name].[ext]',
+        type: 'asset/resource',
+        generator: {
+          filename: 'fonts/[hash][ext][query]',
           publicPath: '../',
         },
       },
       {
         test: /\.(jpg|png|svg)$/,
         exclude: /fonts/,
-        loader: 'file-loader',
-        options: {
-          name: 'graphics/[hash].[ext]',
+        type: 'asset/resource',
+        generator: {
+          filename: 'graphics/[hash][ext][query]',
           publicPath: '../',
         },
       },
