@@ -1,0 +1,21 @@
+@use '../../../scss/variables/color';
+
+.calendar-list {
+  display: flex;
+  flex-direction: column;
+  gap: 52px;
+}
+
+.calendar-list__title {
+  color: color.$white;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 17px;
+}
+
+.calendar-list__items {
+  margin-top: 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}

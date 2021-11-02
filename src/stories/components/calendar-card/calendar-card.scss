@@ -1,0 +1,86 @@
+@use '../../../scss/variables/color';
+
+.calendar-card {
+  align-items: center;
+  background: color.$white;
+  border-left: 8px solid transparent;
+  border-radius: 8px;
+  display: flex;
+  min-height: 146px;
+  text-decoration: none;
+
+  &:hover {
+    box-shadow: 0 0 41px 0 rgba(30, 33, 38, 0.12);
+  }
+}
+
+.calendar-card__date {
+  align-items: center;
+  border-right: 1px solid color.$grey-300;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin: 16px 0;
+  width: 120px;
+}
+
+.calendar-card__weekday {
+  color: color.$grey-500;
+  font-size: 18px;
+}
+
+.calendar-card__day {
+  color: color.$primary-900;
+  font-size: 45px;
+  font-weight: 800;
+}
+
+.calendar-card__month {
+  color: color.$grey-300;
+  font-size: 19px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.calendar-card__content {
+  margin: 16px 0 16px 45px;
+}
+
+.calendar-card__header {
+  color: color.$grey-500;
+  display: flex;
+  font-size: 14px;
+  line-height: 20px;
+  gap: 16px;
+}
+
+.calendar-card__item {
+  color: currentColor;
+  display: flex;
+  height: 20px;
+  text-decoration: none;
+}
+
+.calendar-card__item-graphic {
+  align-items: center;
+  display: flex;
+  margin-right: 8px;
+}
+
+.calendar-card__item-text {
+  margin-right: 8px;
+}
+
+.calendar-card__title {
+  color: color.$primary-900;
+  font-size: 20px;
+  font-weight: 800;
+  line-height: 24px;
+  margin: 10px 0;
+}
+
+.calendar-card__description {
+  color: color.$grey-500;
+  font-size: 16px;
+  line-height: 24px;
+}

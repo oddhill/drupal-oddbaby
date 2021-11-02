@@ -1,0 +1,7 @@
+{%
+  set attribute = create_attribute({ class: ['button', variant ? 'button--' ~ variant : ''] })
+%}
+
+<button {{ attribute }}>
+  {{- content -}}
+</button>

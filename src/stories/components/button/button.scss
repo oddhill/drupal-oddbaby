@@ -1,0 +1,44 @@
+@use '../../../scss/variables/color';
+
+.button {
+  background: color.$primary-500;
+  border: 0;
+  border-radius: 24px;
+  color: color.$white;
+  display: block;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 48px;
+  padding: 0 22px;
+  font-family: inherit;
+  text-decoration: none;
+
+  &:hover {
+    background: color.$primary-700;
+  }
+}
+
+.button--menu {
+  background: color.$accent-bright-blue;
+
+  &:hover {
+    background: color.$primary-500;
+  }
+}
+
+.button--secondary {
+  background: color.$accent-bright-blue;
+
+  &:hover {
+    background: #1414e2;
+  }
+}
+
+.button--white {
+  color: color.$primary-900;
+  background: color.$white;
+
+  &:hover {
+    background: #edf1ff;
+  }
+}

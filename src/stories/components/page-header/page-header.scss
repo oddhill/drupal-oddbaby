@@ -1,0 +1,44 @@
+@use '../../../scss/variables/color';
+
+.page-header {
+  background: color.$primary-300;
+  padding: 0 32px;
+}
+
+.page-header__content {
+  align-items: center;
+  display: flex;
+  height: 96px;
+  justify-content: space-between;
+  margin: 0 auto;
+  max-width: 1472px;
+}
+
+.page-header__logo {
+  height: 46px;
+}
+
+.page-header__menu {
+  display: flex;
+}
+
+.page-header__navigation {
+  align-items: center;
+  display: flex;
+  gap: 34px;
+}
+
+.page-header__navigation-item {
+  color: color.$white;
+  font-size: 18px;
+  line-height: 28px;
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.page-header__action {
+  margin-left: 32px;
+}
