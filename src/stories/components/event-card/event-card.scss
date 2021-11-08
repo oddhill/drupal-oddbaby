@@ -1,16 +1,13 @@
 @use '../../../scss/variables/color';
 
-.event-card__image {
-  border: 2px solid transparent;
-  border-radius: 8px;
+.event-card__image-link {
+  border-radius: 10px;
+  display: block;
+  padding: 2px;
 
   &:hover {
-    border-color: color.$accent-samlon;
+    background: color.$accent-samlon;
   }
-}
-
-.event-card__image-link {
-  display: block;
 }
 
 .event-card__date {

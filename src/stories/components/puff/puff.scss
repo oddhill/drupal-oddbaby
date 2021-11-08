@@ -1,0 +1,54 @@
+@use '../../../scss/mixins/layout';
+@use '../../../scss/variables/color';
+
+.puff {
+  background: color.$accent-samlon;
+  color: color.$primary-700;
+  padding: 40px 0;
+
+  &--seashell {
+    background: color.$accent-sea-shell;
+  }
+}
+
+.puff__inner {
+  @include layout.container();
+
+  display: flex;
+  gap: 40px;
+}
+
+.puff__media,
+.puff__content {
+  flex: 0 1 50%;
+}
+
+.puff__content {
+  display: flex;
+  flex-direction: column;
+}
+
+.puff__icon {
+  height: 40px;
+}
+
+.puff__text {
+  font-size: 32px;
+  font-weight: 600;
+  line-height: 40px;
+  margin-top: 40px;
+  flex: 1;
+}
+
+.puff__subtitle {
+  font-size: 24px;
+  font-weight: 600;
+  line-height: 30px;
+  margin-top: 32px;
+}
+
+.puff__subtext {
+  font-size: 18px;
+  line-height: 28px;
+  margin-top: 4px;
+}

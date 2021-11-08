@@ -1,4 +1,4 @@
-import { renderButtonLink } from '../button/button';
+import { renderButtonLink } from '../../components/button/button';
 
 import logo from './logo.svg';
 
@@ -12,7 +12,7 @@ export function renderPageHeader(): string {
   });
 
   return `
-    <div class="page-header">
+    <header class="page-header">
       <div class="page-header__content">
         <img class="page-header__logo" src="${logo}" />
 
@@ -28,6 +28,6 @@ export function renderPageHeader(): string {
           </div>
         </div>
       </div>
-    </div>
+    </header>
   `;
 }

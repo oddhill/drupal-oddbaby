@@ -1,0 +1,19 @@
+@use '../../../scss/variables/color';
+
+.page {
+  background: url('./background.svg') no-repeat, color.$background;
+  background-size: 100%;
+
+  .page-section {
+    margin-top: 120px;
+    margin-bottom: 120px;
+
+    &:first-child {
+      margin-top: 60px;
+    }
+  }
+}
+
+.page__background {
+  position: absolute;
+}

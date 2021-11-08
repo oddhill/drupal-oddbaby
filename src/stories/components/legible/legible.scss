@@ -1,0 +1,44 @@
+@use '../../../scss/variables/color';
+
+.legible {
+  color: color.$grey-100;
+
+  h1 {
+    color: color.$white;
+    font-size: 48px;
+    font-weight: 800;
+    line-height: 48px;
+  }
+
+  h2 {
+    color: color.$primary-100;
+    font-size: 28px;
+    font-weight: 600;
+    line-height: 32px;
+    margin-top: 56px;
+  }
+
+  a {
+    color: color.$white;
+  }
+
+  p.preamble {
+    font-size: 24px;
+    font-weight: 600;
+    line-height: 30px;
+  }
+
+  p {
+    font-size: 18px;
+    margin: 32px 0;
+    line-height: 28px;
+
+    &:first-child {
+      margin-top: 0;
+    }
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+}

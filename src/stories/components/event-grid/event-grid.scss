@@ -1,0 +1,5 @@
+.event-grid {
+  display: grid;
+  gap: 64px 40px;
+  grid-template-columns: repeat(2, 1fr);
+}

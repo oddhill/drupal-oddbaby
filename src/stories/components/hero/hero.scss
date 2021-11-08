@@ -1,0 +1,32 @@
+@use '../../../scss/variables/color';
+
+.hero {
+  display: flex;
+  gap: 40px;
+  align-items: center;
+}
+
+.hero__media,
+.hero__content {
+  flex: 0 1 50%;
+}
+
+.hero__title {
+  color: color.$white;
+  font-size: 54px;
+  font-weight: 800;
+  line-height: 60px;
+}
+
+.hero__text {
+  color: color.$grey-100;
+  font-size: 20px;
+  line-height: 32px;
+  margin-top: 28px;
+}
+
+.hero__actions {
+  display: flex;
+  gap: 16px;
+  margin-top: 40px;
+}

@@ -1,7 +1,7 @@
 import { renderPageHeader } from './page-header';
 
 export default {
-  title: 'Components/Page Header',
+  title: 'Layout/Page Header',
 };
 
 const Template = () => renderPageHeader();

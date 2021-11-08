@@ -1,3 +1,5 @@
+import { renderImage } from '../image/image';
+
 import render from './event-card.html.twig';
 import image from './event-image_small.jpg';
 
@@ -21,8 +23,5 @@ EventCard.args = {
   title: 'SM i 100 meter sprint',
   text: 'Lorem ipsum dolor sit amet, consectetur.',
   date: new Date(),
-  image: {
-    alt: 'Some image alt',
-    src: image,
-  },
+  image: renderImage({ src: image, alt: 'SM i 100 meter sprint' }),
 };

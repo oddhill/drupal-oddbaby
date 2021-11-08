@@ -1,0 +1,60 @@
+@use '../../../scss/variables/color';
+@use '../../../scss/mixins/layout';
+
+.page-footer {
+  background: color.$primary-700;
+  padding: 100px 32px 60px;
+}
+
+.page-footer__content {
+  @include layout.container();
+
+  display: grid;
+  grid-template:
+    'about contact social'
+    'links links links';
+  grid-template-columns: 2fr 1fr 1fr;
+  gap: 80px;
+}
+
+.page-footer__about {
+  grid-area: about;
+}
+
+.page-footer__contact {
+  grid-area: contact;
+}
+
+.page-footer__social {
+  grid-area: social;
+}
+
+.page-footer__links {
+  border-top: 1px solid color.$white;
+  display: flex;
+  grid-area: links;
+  padding: 16px 0;
+  gap: 32px;
+}
+
+.page-footer__link {
+  color: color.$white;
+  text-decoration: underline;
+
+  &:hover {
+    color: color.$primary-100;
+  }
+}
+
+.page-footer__title {
+  color: color.$white;
+  font-size: 22px;
+  font-weight: 800;
+  line-height: 29px;
+}
+
+.page-footer__text {
+  color: color.$primary-100;
+  line-height: 26px;
+  margin-top: 16px;
+}
