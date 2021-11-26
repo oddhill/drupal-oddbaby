@@ -63,6 +63,7 @@ const commonConfig = {
     new MiniCssExtractPlugin({
       filename: 'css/[name].css',
       chunkFilename: 'css/[name].css',
+      experimentalUseImportModule: false,
     }),
     new RemoveEmptyScriptsPlugin(),
   ],
