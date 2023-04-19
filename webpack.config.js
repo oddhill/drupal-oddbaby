@@ -12,7 +12,7 @@ const TerserPlugin = require('terser-webpack-plugin');
 const commonConfig = {
   context: path.resolve(__dirname, './src'),
   entry: {
-    main: ['./js/main.js', './scss/main.scss'],
+    main: ['./js/main.ts', './scss/main.scss'],
     ckeditor: './scss/ckeditor.scss',
     print: './scss/print.scss',
   },
@@ -26,7 +26,7 @@ const commonConfig = {
   module: {
     rules: [
       {
-        test: /\.js$/,
+        test: /\.(js|ts)$/,
         exclude: /node_modules/,
         use: 'babel-loader',
       },
