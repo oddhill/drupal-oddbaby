@@ -7,7 +7,7 @@
   "author": "Christoffer Palm <christoffer.palm@oddhill.se>",
   "license": "MIT",
   "engines": {
-    "node": "14.*"
+    "node": "18.*"
   },
   "scripts": {
     "start": "NODE_ENV=development webpack",
