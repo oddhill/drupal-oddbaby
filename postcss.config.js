@@ -1,11 +1,10 @@
 /* eslint-env node, es6 */
-/* eslint-disable import/no-extraneous-dependencies */
+/* eslint-disable @typescript-eslint/no-var-requires */
 
 const autoprefixer = require('autoprefixer');
+const tailwindcss = require('tailwindcss');
 
 // PostCSS configuration.
 module.exports = {
-  plugins: [
-    autoprefixer(),
-  ],
+  plugins: [autoprefixer(), tailwindcss()],
 };

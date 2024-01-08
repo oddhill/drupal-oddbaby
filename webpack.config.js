@@ -13,9 +13,7 @@ const TerserPlugin = require('terser-webpack-plugin');
 const commonConfig = {
   context: path.resolve(__dirname, './src'),
   entry: {
-    main: ['./js/main.ts', './scss/main.scss'],
-    ckeditor: './scss/ckeditor.scss',
-    print: './scss/print.scss',
+    main: ['./js/main.ts', './css/tailwind.css'],
   },
   output: {
     path: path.resolve(__dirname, 'build'),

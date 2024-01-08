@@ -1,0 +1,13 @@
+<div{{ attributes.addClass('flex gap-6 items-center') }}>
+  {% block media %}{% endblock %}
+
+  <div class="flex flex-col gap-8">
+    <h1 class="text-[5rem] leading-[5.5rem] font-bold">
+      {{- title -}}
+    </h1>
+
+    {% block text %}{% endblock %}
+
+    {# {{- links -}} #}
+  </div>
+</div>

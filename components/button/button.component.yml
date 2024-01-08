@@ -1,0 +1,21 @@
+$schema: https://git.drupalcode.org/project/sdc/-/raw/1.x/src/metadata.schema.json
+
+name: Button
+
+props:
+  type: object
+
+  required:
+    - text
+    - url
+
+  properties:
+    text:
+      type: string
+      title: Text
+      description: The text to display in the button.
+
+    url:
+      type: string
+      title: URL
+      description: The place the button should link to.

@@ -15,7 +15,16 @@
  */
 #}
 {% if content %}
-  <header role="banner"{{ attributes.addClass('site-header') }}>
-    {{ content }}
+  <header role="banner"{{ attributes }}>
+    <div class="container flex items-center justify-between h-28">
+      <div class="flex gap-28 items-center">
+        {{- elements.logo -}}
+        {{- elements.navigation -}}
+      </div>
+
+      <div class="flex">
+        {{- elements.language -}}
+      </div>
+    </div>
   </header>
 {% endif %}

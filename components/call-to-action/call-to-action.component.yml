@@ -1,0 +1,41 @@
+$schema: https://git.drupalcode.org/project/sdc/-/raw/1.x/src/metadata.schema.json
+
+name: Call to Action
+
+props:
+  type: object
+
+  required:
+    - text
+    - url
+
+  properties:
+    attributes:
+      type: Drupal\Core\Template\Attribute
+
+    title:
+      type: string
+      title: Title
+
+    links:
+      type: array
+      items:
+        type: object
+        properties:
+          title:
+            type: string
+            title: Title
+          url:
+            type: string
+            title: Title
+
+slots:
+  media:
+    title: Media
+    required: true
+    description: Media like an image or video.
+
+  text:
+    title: Text
+    required: true
+    description: Text content to display below the title.

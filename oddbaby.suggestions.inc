@@ -37,7 +37,7 @@ function oddbaby_theme_suggestions_field_alter(array &$suggestions, array $varia
 function oddbaby_theme_suggestions_page_title_alter(array &$suggestions): void {
   $path_args = [''];
 
-  if (!Drupal::service('path.matcher')->isFrontPage()) {
+  if (!\Drupal::service('path.matcher')->isFrontPage()) {
     $path_args = explode('/', ltrim(Drupal::service('path.current')->getPath(), '/'));
   }
 

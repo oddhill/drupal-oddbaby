@@ -1,0 +1,53 @@
+@font-face {
+  font-family: 'Averta';
+  font-style: normal;
+  font-weight: 400;
+  src:
+    url('../fonts/89f1e0ce-0337-46bd-83eb-521970fb47c9.woff2') format('woff2'),
+    url('../fonts/ffec1ad2-fea3-4d14-bc1f-bc1b0396417b.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'Averta';
+  font-style: italic;
+  font-weight: 400;
+  src:
+    url('../fonts/fac93f55-a52e-4691-a5f3-fc89270fe480.woff2') format('woff2'),
+    url('../fonts/436a67bd-97e2-4d02-83ac-07a7a7894609.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'Averta';
+  font-style: normal;
+  font-weight: 600;
+  src:
+    url('../fonts/1e92f6d7-7f6f-4498-8aef-b4ae8457137f.woff2') format('woff2'),
+    url('../fonts/1f092190-9543-465b-803c-957470fe5c40.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'Averta';
+  font-style: italic;
+  font-weight: 600;
+  src:
+    url('../fonts/f2e079f4-7f94-4e35-ac26-3fbc57d6c267.woff2') format('woff2'),
+    url('../fonts/b38261c5-b66b-450d-a3ea-1fc312007f64.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'Averta';
+  font-style: normal;
+  font-weight: 700;
+  src:
+    url('../fonts/c52b7ee6-2bc8-4dfc-8fef-36af3c2d0f63.woff2') format('woff2'),
+    url('../fonts/51d44388-ec35-4d35-a644-48812f2b3f67.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'Averta';
+  font-style: italic;
+  font-weight: 700;
+  src:
+    url('../fonts/5e5cbca9-4efe-45b6-a287-96962556b612.woff2') format('woff2'),
+    url('../fonts/d888bc61-de40-4e37-9400-0d82440a8e98.woff') format('woff');
+}
