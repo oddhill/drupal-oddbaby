@@ -2,8 +2,6 @@
 
 declare(strict_types=1);
 
-use Drupal;
-
 /**
  * @file
  * This file contains additional theme suggestions added by the theme.
@@ -37,8 +35,8 @@ function oddbaby_theme_suggestions_field_alter(array &$suggestions, array $varia
 function oddbaby_theme_suggestions_page_title_alter(array &$suggestions): void {
   $path_args = [''];
 
-  if (!Drupal::service('path.matcher')->isFrontPage()) {
-    $path_args = explode('/', ltrim(Drupal::service('path.current')->getPath(), '/'));
+  if (!\Drupal::service('path.matcher')->isFrontPage()) {
+    $path_args = explode('/', ltrim(\Drupal::service('path.current')->getPath(), '/'));
   }
 
   $page_title_suggestions = theme_get_suggestions($path_args, 'page_title');

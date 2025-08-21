@@ -1,13 +1,13 @@
 # Odd Baby
 
-Starter for creating new themes for Drupal 8 and 9 sites.
+Starter for creating new themes for Drupal 10 and 11 sites.
 
 This starter contains everything you might need to create a bare bones theme
 with some basic configuration provided out of the box.
 
 ## Requirements
 
-- [Node.js](https://nodejs.org/en/) (Version 12)
+- [Node.js](https://nodejs.org/en/) (Version 22)
 - [Yarn](https://yarnpkg.com/en/)
 
 ## Getting started
