@@ -1,0 +1,4 @@
+simple_card_puff:
+  css:
+    theme:
+      build/css/simple-card-puff.css: { minified: true }

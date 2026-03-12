@@ -1,0 +1,152 @@
+@use '../../../src/scss/variables/responsive';
+
+.simple-card {
+  --simple-card-cols-mobile: 1;
+  --simple-card-cols-tablet: 2;
+  --simple-card-cols-desktop: 3;
+
+  &__grid {
+    display: grid;
+    gap: 1.5rem;
+    grid-template-columns: repeat(var(--simple-card-cols-mobile), minmax(0, 1fr));
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  /*
+   * Drupal field templates wrap referenced items in .field/.field__items/.field__item.
+   * Flatten those wrappers so each .field__item participates in the grid.
+   */
+  &__grid {
+    // Sometimes the output is additionally wrapped in anonymous <div> elements
+    // (e.g. view mode wrappers). If those remain, the grid sees only 1 child.
+    // Flatten only non-card wrappers so the card itself remains the grid item.
+    > :not(.paragraph):not(.simple-card-item) {
+      display: contents;
+    }
+
+    > :not(.paragraph):not(.simple-card-item) > :not(.paragraph):not(.simple-card-item) {
+      display: contents;
+    }
+
+    .field,
+    .field__items {
+      display: contents;
+    }
+
+    .field__item {
+      display: contents;
+      min-width: 0;
+    }
+  }
+
+  @media (min-width: map-get(responsive.$breakpoints, tablet)) {
+    &__grid {
+      grid-template-columns: repeat(var(--simple-card-cols-tablet), minmax(0, 1fr));
+    }
+  }
+
+  @media (min-width: map-get(responsive.$breakpoints, tablet-landscape)) {
+    &__grid {
+      grid-template-columns: repeat(var(--simple-card-cols-desktop), minmax(0, 1fr));
+    }
+  }
+}
+
+/*
+ * Auto-grid for Puff cards.
+ *
+ * Uses :has() to detect containers that hold Puff node cards and
+ * turns them into a responsive grid — no extra CSS classes or JS needed.
+ * Works with Views unformatted lists (direct .views-row children)
+ * and any other wrapper that contains .node--view-mode--puff cards.
+ */
+:has(> .views-row > .node--view-mode--puff) {
+  --simple-card-cols-mobile: 1;
+  --simple-card-cols-tablet: 2;
+  --simple-card-cols-desktop: 3;
+
+  display: grid;
+  gap: 1.5rem;
+  grid-template-columns: repeat(var(--simple-card-cols-mobile), minmax(0, 1fr));
+  width: 100%;
+  box-sizing: border-box;
+
+  > .views-row {
+    display: contents;
+  }
+
+  /* Keep non-row chrome (contextual links, pager, etc.) full-width. */
+  > :not(.views-row) {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (min-width: map-get(responsive.$breakpoints, tablet)) {
+  :has(> .views-row > .node--view-mode--puff) {
+    grid-template-columns: repeat(var(--simple-card-cols-tablet), minmax(0, 1fr));
+  }
+}
+
+@media (min-width: map-get(responsive.$breakpoints, tablet-landscape)) {
+  :has(> .views-row > .node--view-mode--puff) {
+    grid-template-columns: repeat(var(--simple-card-cols-desktop), minmax(0, 1fr));
+  }
+}
+
+@for $i from 1 through 4 {
+  .simple-card--m-#{$i} {
+    --simple-card-cols-mobile: #{$i};
+  }
+  .simple-card--t-#{$i} {
+    --simple-card-cols-tablet: #{$i};
+  }
+  .simple-card--d-#{$i} {
+    --simple-card-cols-desktop: #{$i};
+  }
+}
+
+.simple-card-item {
+  height: 100%;
+
+  &__media {
+    img,
+    video,
+    iframe {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+
+    .media,
+    .field,
+    .field__item {
+      height: 100%;
+    }
+  }
+
+  &__content {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    padding: 1.25rem;
+  }
+
+  &__cta a,
+  &__cta-label {
+    display: inline-block;
+    text-decoration: underline;
+    text-underline-offset: 0.15em;
+  }
+}
+
+.simple-card-item--link {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.simple-card-item--link:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 2px;
+}
