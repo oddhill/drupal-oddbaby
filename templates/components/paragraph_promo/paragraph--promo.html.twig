@@ -1,0 +1,82 @@
+{#
+/**
+ * @file
+ * Theme override for the Promo paragraph.
+ *
+ * Layout:
+ * - Background media (image/video)
+ * - Subtitle
+ * - Heading
+ * - Text
+ * - Button
+ */
+#}
+
+{{ attach_library(active_theme() ~ '/paragraph_promo') }}
+
+{%
+  set classes = [
+    'paragraph',
+    'paragraph--type--' ~ paragraph.bundle|clean_class,
+    view_mode ? 'paragraph--view-mode--' ~ view_mode|clean_class,
+    not paragraph.isPublished() ? 'paragraph--unpublished',
+    'paragraph-promo',
+  ]
+%}
+
+{% set subtitle_value = paragraph.field_subtitle.value|default('') %}
+{% set heading_value = paragraph.field_heading.value|default('') %}
+{% set heading_id = heading_value ? 'paragraph-' ~ paragraph.id() ~ '-heading' : '' %}
+{% set button_variant = paragraph.field_button_variant.value|default('link') %}
+{% set button_new_window = paragraph.field_button_new_window.value|default(0) %}
+{% set button_icon = paragraph.field_button_icon.value|default('') %}
+{% set button_icon_position = paragraph.field_button_icon_position.value|default('left') %}
+
+{# Render field output once so emptiness checks work reliably. #}
+{% set media = content.field_media|render %}
+{% set body = content.field_body|render %}
+{% set button_fallback = content.field_button_link|render %}
+{% set button_item = paragraph.field_button_link.0|default(null) %}
+{% set button_link_template = '@' ~ active_theme() ~ '/templates/components/button_link/button-link.html.twig' %}
+
+<div{{ attributes.addClass(classes).setAttribute('aria-labelledby', heading_id ?: null) }}>
+  {% if media %}
+    <div class="paragraph-promo__background" aria-hidden="true">
+      {{ media }}
+    </div>
+  {% endif %}
+
+  <div class="paragraph-promo__overlay">
+    {% if subtitle_value %}
+      <div class="paragraph-promo__subtitle">{{ subtitle_value|escape }}</div>
+    {% endif %}
+
+    {% if heading_value %}
+      <h2 id="{{ heading_id }}" class="paragraph-promo__heading">
+        {{ heading_value|escape }}
+      </h2>
+    {% endif %}
+
+    {% if body %}
+      <div class="paragraph-promo__body">
+        {{ body }}
+      </div>
+    {% endif %}
+
+    {% if button_fallback %}
+      <div class="paragraph-promo__button">
+        {% include button_link_template with {
+          variant: button_variant,
+          item: button_item,
+          fallback: button_fallback,
+          new_window: button_new_window == 1,
+          icon: button_icon,
+          icon_position: button_icon_position,
+        } only %}
+      </div>
+    {% endif %}
+  </div>
+
+  {# Render any remaining elements (e.g. hidden fields, attachments). #}
+  {{ content|without('field_media', 'field_subtitle', 'field_heading', 'field_body', 'field_button_link', 'field_button_variant', 'field_button_new_window', 'field_button_icon', 'field_button_icon_position') }}
+</div>

@@ -1,0 +1,9 @@
+paragraph_promo:
+  css:
+    theme:
+      build/css/paragraph-promo.css: { minified: true }
+  js:
+    build/js/paragraph-promo.js: { minified: true }
+  dependencies:
+  - core/drupal
+  - core/once

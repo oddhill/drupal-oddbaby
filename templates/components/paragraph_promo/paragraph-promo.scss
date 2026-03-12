@@ -1,0 +1,45 @@
+.paragraph-promo {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+
+  &__background {
+    position: relative;
+
+    /* Rendered media should behave like a background. */
+    img,
+    video,
+    iframe {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    /* Common Drupal media wrappers: make them fill the container. */
+    .media,
+    .field,
+    .field__item {
+      height: 100%;
+    }
+  }
+
+  &__overlay {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    z-index: 1;
+    padding: 2rem;
+  }
+
+  &__button a {
+    display: inline-block;
+    text-decoration: underline;
+    text-underline-offset: 0.15em;
+  }
+
+  &__button a:focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: 2px;
+  }
+}
