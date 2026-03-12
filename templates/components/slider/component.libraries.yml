@@ -1,0 +1,9 @@
+slider:
+  css:
+    theme:
+      build/css/slider.css: { minified: true }
+  js:
+    build/js/slider.js: { minified: true }
+  dependencies:
+  - core/drupal
+  - core/once
