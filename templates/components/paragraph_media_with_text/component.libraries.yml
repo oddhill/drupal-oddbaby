@@ -1,0 +1,9 @@
+paragraph_media_with_text:
+  css:
+    theme:
+      build/css/paragraph-media-with-text.css: { minified: true }
+  js:
+    build/js/paragraph-media-with-text.js: { minified: true }
+  dependencies:
+  - core/drupal
+  - core/once
