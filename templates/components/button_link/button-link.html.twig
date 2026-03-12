@@ -1,0 +1,52 @@
+{#
+/**
+ * @file
+ * Call-to-Action link component.
+ *
+ * Variables:
+ * - variant: 'link' (default) or 'button' (adds the .button class)
+ * - item: Link field item (optional, typically paragraph.field_button_link.0)
+ * - fallback: Rendered link markup (optional)
+ * - new_window: boolean (optional) whether to add target="_blank"
+ * - icon: string (optional) Font Awesome icon class without style prefix, e.g. 'fa-arrow-right'
+ * - icon_position: string (optional) 'left' or 'right'
+ */
+#}
+
+{{ attach_library(active_theme() ~ '/button_link') }}
+{{ attach_library('button_link/fontawesome_kit') }}
+
+{% set variant = variant|default('link') %}
+{% set item = item|default(null) %}
+{% set new_window = new_window|default(false) %}
+{% set icon = icon|default('') %}
+{% set icon_position = icon_position|default('left') %}
+
+{% set label_value = item and item.title is defined ? item.title : '' %}
+{% set url_value = item and item.url is defined ? item.url : null %}
+
+{% set options = item and item.options is defined ? item.options : {} %}
+{% set attributes = options.attributes|default({}) %}
+
+{% set existing_classes = attributes.class is defined ? (attributes.class is iterable ? attributes.class : [attributes.class]) : [] %}
+{% set classes = variant == 'button' ? (existing_classes|merge(['button'])) : existing_classes %}
+{% set attributes = attributes|merge({ class: classes }) %}
+
+{% if new_window %}
+  {% set attributes = attributes|merge({ target: '_blank', rel: 'noopener noreferrer' }) %}
+{% endif %}
+
+{% if label_value and url_value %}
+  {% set attr = create_attribute(attributes) %}
+  <a href="{{ url_value.toString }}"{{ attr }}>
+    {% if icon and icon_position == 'left' %}
+      <i class="{{ icon|button_link_fa_classes|escape }}" aria-hidden="true"></i>
+    {% endif %}
+    {% if icon and icon_position == 'left' %} {% endif %}{{ label_value|escape }}{% if icon and icon_position == 'right' %} {% endif %}
+    {% if icon and icon_position == 'right' %}
+      <i class="{{ icon|button_link_fa_classes|escape }}" aria-hidden="true"></i>
+    {% endif %}
+  </a>
+{% elseif fallback is defined and fallback %}
+  {{ fallback }}
+{% endif %}
