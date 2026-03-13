@@ -16,8 +16,9 @@ const path = require('path');
 const YAML = require('yaml');
 
 const THEME_ROOT = path.resolve(__dirname, '..');
+const THEME_NAME = path.basename(THEME_ROOT);
 const COMPONENTS_ROOT = path.join(THEME_ROOT, 'templates', 'components');
-const THEME_LIBRARIES_FILE = path.join(THEME_ROOT, 'custom_components_dev.libraries.yml');
+const THEME_LIBRARIES_FILE = path.join(THEME_ROOT, `${THEME_NAME}.libraries.yml`);
 const GENERATED_DIR = path.join(THEME_ROOT, 'scripts', '.generated');
 const GENERATED_COMPONENT_ENTRIES_FILE = path.join(GENERATED_DIR, 'component-entries.json');
 
