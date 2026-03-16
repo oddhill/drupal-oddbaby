@@ -1,0 +1,50 @@
+@use '../../../src/scss/variables/color';
+@use '../../../src/scss/variables/responsive';
+
+.quote {
+  width: 100%;
+  padding: 3rem 1.5rem;
+
+  &__container {
+    max-width: 800px;
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  &__content {
+    margin: 0;
+    padding: 0;
+  }
+
+  &__quote {
+    margin: 0 0 1.5rem;
+    font-size: 1.5rem;
+    font-weight: 600;
+    font-style: italic;
+    line-height: 1.4;
+
+    @media (min-width: map-get(responsive.$breakpoints, tablet)) {
+      font-size: 2rem;
+    }
+
+    @media (min-width: map-get(responsive.$breakpoints, desktop)) {
+      font-size: 2.5rem;
+    }
+  }
+
+  &__source {
+    display: block;
+    margin-top: 1rem;
+    font-size: 1rem;
+    font-style: normal;
+    opacity: 0.8;
+
+    &::before {
+      content: '— ';
+    }
+
+    @media (min-width: map-get(responsive.$breakpoints, tablet)) {
+      font-size: 1.125rem;
+    }
+  }
+}
