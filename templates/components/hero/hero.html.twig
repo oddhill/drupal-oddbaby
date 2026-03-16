@@ -1,0 +1,90 @@
+{#
+/**
+ * @file
+ * Hero component template.
+ *
+ * Variables:
+ * - title: Hero title text
+ * - subtitle: Optional subtitle/description text
+ * - image: Hero background image URL
+ * - video: Hero background video URL
+ * - background_color: Background color (e.g., '#333', 'primary', 'secondary')
+ * - overlay: Boolean to enable/disable gradient overlay
+ * - alignment: Text alignment (left, center, right)
+ * - layout: Layout type (full, split-left, split-right)
+ * - attributes: Additional attributes for the hero wrapper
+ */
+#}
+
+{{ attach_library(active_theme() ~ '/hero') }}
+
+{% set attributes = attributes|default(create_attribute()) %}
+{% set layout = layout|default('full') %}
+
+{% set classes = [
+  'hero',
+  alignment ? 'hero--align-' ~ alignment : 'hero--align-center',
+  overlay ? 'hero--overlay',
+  image ? 'hero--has-image',
+  video ? 'hero--has-video',
+  background_color ? 'hero--bg-' ~ background_color : '',
+  'hero--layout-' ~ layout,
+] %}
+
+<section{{ attributes.addClass(classes) }}{% if background_color and background_color starts with '#' %} style="background-color: {{ background_color }};"{% endif %}>
+  
+  {% if layout == 'full' %}
+    {# Full-width layout #}
+    {% if video %}
+      <div class="hero__background hero__background--video">
+        <video class="hero__video" autoplay muted loop playsinline>
+          <source src="{{ video }}" type="video/mp4">
+        </video>
+      </div>
+    {% elseif image %}
+      <div class="hero__background hero__background--image" style="background-image: url('{{ image }}');"></div>
+    {% endif %}
+
+    {# Content wrapper #}
+    <div class="hero__container">
+      <div class="hero__content">
+        {% if title %}
+          <h1 class="hero__title">{{ title }}</h1>
+        {% endif %}
+        {% if subtitle %}
+          <div class="hero__subtitle">{{ subtitle }}</div>
+        {% endif %}
+      </div>
+    </div>
+
+  {% else %}
+    {# Split layout: media and content side by side #}
+    <div class="hero__wrapper">
+      
+      {# Media #}
+      <div class="hero__media">
+        {% if video %}
+          <video class="hero__video" autoplay muted loop playsinline>
+            <source src="{{ video }}" type="video/mp4">
+          </video>
+        {% elseif image %}
+          <img src="{{ image }}" alt="{{ title }}" class="hero__image">
+        {% endif %}
+      </div>
+
+      {# Content #}
+      <div class="hero__container">
+        <div class="hero__content">
+          {% if title %}
+            <h1 class="hero__title">{{ title }}</h1>
+          {% endif %}
+          {% if subtitle %}
+            <div class="hero__subtitle">{{ subtitle }}</div>
+          {% endif %}
+        </div>
+      </div>
+
+    </div>
+  {% endif %}
+
+</section>
