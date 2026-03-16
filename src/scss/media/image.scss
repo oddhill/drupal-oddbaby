@@ -1,3 +1,59 @@
 // Styling for media images
+//
+// Uncomment and customize the styles you need for your project.
 
-// .media-image {}
+// Base image styling
+// img {
+//   max-width: 100%;
+//   height: auto;
+//   display: block;
+// }
+
+// Responsive images
+// .media-image {
+//   display: block;
+//   width: 100%;
+//   height: auto;
+//
+//   img {
+//     width: 100%;
+//     height: auto;
+//   }
+// }
+
+// Square aspect ratio
+// .media-image--1-1 {
+//   position: relative;
+//   padding-bottom: 100%; // 1:1 (square)
+//   overflow: hidden;
+//
+//   img {
+//     position: absolute;
+//     top: 0;
+//     left: 0;
+//     width: 100%;
+//     height: 100%;
+//     object-fit: cover;
+//   }
+// }
+
+// Rounded corners
+// .media-image--rounded {
+//   img {
+//     border-radius: 8px;
+//   }
+// }
+
+// Circular image
+// .media-image--circle {
+//   img {
+//     border-radius: 50%;
+//   }
+// }
+
+// Full width image
+// .media-image--full {
+//   width: 100vw;
+//   margin-left: 50%;
+//   transform: translateX(-50%);
+// }

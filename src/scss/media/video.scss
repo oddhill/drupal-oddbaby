@@ -1,3 +1,66 @@
 // Styling for media videos
+//
+// Uncomment and customize the styles you need for your project.
 
-// .media-video {}
+// Base video styling
+// video {
+//   max-width: 100%;
+//   height: auto;
+//   display: block;
+// }
+
+// Responsive video container
+// .media-video {
+//   position: relative;
+//   width: 100%;
+//   padding-bottom: 56.25%; // 16:9 aspect ratio
+//   overflow: hidden;
+//   background-color: #000;
+//
+//   video,
+//   iframe {
+//     position: absolute;
+//     top: 0;
+//     left: 0;
+//     width: 100%;
+//     height: 100%;
+//     border: 0;
+//   }
+// }
+
+// Background video
+// .media-video--background {
+//   position: absolute;
+//   top: 0;
+//   left: 0;
+//   width: 100%;
+//   height: 100%;
+//   overflow: hidden;
+//   z-index: -1;
+//
+//   video {
+//     position: absolute;
+//     top: 50%;
+//     left: 50%;
+//     min-width: 100%;
+//     min-height: 100%;
+//     width: auto;
+//     height: auto;
+//     transform: translate(-50%, -50%);
+//     object-fit: cover;
+//   }
+// }
+
+// Video with rounded corners
+// .media-video--rounded {
+//   border-radius: 8px;
+//   overflow: hidden;
+// }
+
+// Full width video
+// .media-video--full {
+//   width: 100vw;
+//   margin-left: 50%;
+//   transform: translateX(-50%);
+// }
+
