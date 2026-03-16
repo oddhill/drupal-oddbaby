@@ -1,0 +1,13 @@
+name: 'Paragraph Media With Text'
+type: module
+description: 'Provides a reusable paragraph type with media + text.'
+core_version_requirement: ^11
+package: Custom
+dependencies:
+- drupal:paragraphs
+- drupal:media
+- drupal:media_library
+- drupal:link
+- drupal:text
+- drupal:options
+- button_link

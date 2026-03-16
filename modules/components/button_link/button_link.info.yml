@@ -1,0 +1,9 @@
+name: 'Button Link'
+type: module
+description: 'Provides shared Call-to-Action field storage and helpers for component-based paragraphs.'
+core_version_requirement: ^11
+package: Custom
+dependencies:
+- drupal:options
+- drupal:field
+- csp:csp

@@ -1,0 +1,658 @@
+<?php
+
+/**
+ * @file
+ * Button Link helpers.
+ */
+
+/**
+ * Extract the last `fa-...` icon token from an icon value.
+ *
+ * Supports both icon-only values ("fa-arrow-right") and styleful values
+ * ("fa-brands fa-x-twitter").
+ */
+function button_link_extract_fa_icon_token($value) {
+  $value = trim($value);
+  if ($value === '') {
+    return NULL;
+  }
+
+  if (preg_match_all('/\bfa-[a-z0-9-]+\b/i', $value, $m) && !empty($m[0])) {
+    $token = (string) end($m[0]);
+    $token = strtolower(trim($token));
+    return $token !== '' ? $token : NULL;
+  }
+
+  return NULL;
+}
+
+/**
+ * Build a human-readable label from an icon value.
+ */
+function button_link_build_fa_icon_label($value) {
+  $token = button_link_extract_fa_icon_token($value);
+  if ($token === NULL || !str_starts_with($token, 'fa-')) {
+    return $value;
+  }
+
+  $label = substr($token, 3);
+  $label = str_replace('-', ' ', $label);
+  return ucwords($label);
+}
+
+/**
+ * Allowed values callback for the `field_button_icon` list_string field.
+ *
+ * @see callback_allowed_values_function()
+ */
+function button_link_field_button_icon_allowed_values($definition, $entity = NULL, &$cacheable = TRUE) {
+  $cacheable = TRUE;
+
+  $values = [];
+
+  // Only use the local icon subset for allowed values.
+  $subset = button_link_get_fontawesome_allowed_icons_subset();
+  if ($subset) {
+    foreach ($subset as $icon) {
+      $label = button_link_build_fa_icon_label($icon);
+      $values[$icon] = $values[$icon] ?? $label;
+
+      // Preserve exact styleful entries from the provider/package as-is.
+      if (str_contains($icon, ' ')) {
+        // Also register non-fa-classic variants for backward compatibility.
+        if (str_starts_with($icon, 'fa-classic ')) {
+          $noClassic = substr($icon, strlen('fa-classic '));
+          $values[$noClassic] = $values[$noClassic] ?? $label;
+        }
+        continue;
+      }
+
+      $token = button_link_extract_fa_icon_token($icon);
+      if ($token !== NULL && !isset($values[$token])) {
+        $values[$token] = $values[$icon];
+      }
+      if (!str_contains($icon, ' ') && $token !== NULL) {
+        foreach (['fa-classic fa-solid', 'fa-classic fa-regular', 'fa-classic fa-light', 'fa-classic fa-thin', 'fa-solid', 'fa-regular', 'fa-duotone'] as $style) {
+          $styleful = $style . ' ' . $token;
+          $values[$styleful] = $values[$styleful] ?? $values[$token];
+        }
+        // Some FA7 kit icons are rendered with a dual-style class combination.
+        $duotoneSolid = 'fa-duotone fa-solid ' . $token;
+        $values[$duotoneSolid] = $values[$duotoneSolid] ?? $values[$token];
+      }
+    }
+    return $values;
+  }
+  return $values;
+}
+
+/**
+ * Validate a manually entered Font Awesome icon value for button_link fields.
+ */
+function button_link_validate_styleful_icon($element, \Drupal\Core\Form\FormStateInterface $form_state): void {
+  $value = trim((string) $form_state->getValue($element['#name']));
+  if ($value === '') {
+    return;
+  }
+
+  $allowed = button_link_get_fontawesome_icon_allowed_values();
+  if (!isset($allowed[$value])) {
+    $form_state->setError($element, \Drupal::translation()->translate('The value you selected is not a valid icon choice. Please pick from the list.'));
+  }
+}
+
+/**
+ * Get configured subset of allowed Font Awesome icons.
+ */
+function button_link_get_fontawesome_allowed_icons_subset() {
+  // Get the kit URL from config.
+  $kit_url = button_link_get_configured_kit_url();
+  if (!$kit_url) {
+    return [];
+  }
+
+  try {
+    if (class_exists('\\Drupal') && \Drupal::hasContainer() && \Drupal::hasService('button_link.fa_kit_icon_provider')) {
+      $icons = \Drupal::service('button_link.fa_kit_icon_provider')->getIconsFromConfiguredKit();
+      if (is_array($icons) && $icons) {
+        return array_values(array_unique(array_filter($icons, static function ($icon) {
+          if (!is_string($icon)) {
+            return FALSE;
+          }
+          $icon = trim($icon);
+          if ($icon === '' || !str_starts_with($icon, 'fa-')) {
+            return FALSE;
+          }
+          return !in_array($icon, ['fa-solid', 'fa-regular', 'fa-brands', 'fa-duotone', 'fa-light', 'fa-thin', 'fa-sharp', 'fa-classic'], TRUE);
+        })));
+      }
+    }
+  }
+  catch (\Throwable $e) {
+  }
+
+  // Fallback: sanitize the local generated JSON if the provider is unavailable.
+  $themeName = _button_link_get_active_theme_name();
+  if (!$themeName) {
+    return [];
+  }
+  $json_path = \Drupal::root() . '/public/themes/' . $themeName . '/build/fontawesome-kit-icons.json';
+  if (!file_exists($json_path)) {
+    return [];
+  }
+
+  $raw = file_get_contents($json_path);
+  if ($raw === FALSE) {
+    return [];
+  }
+  $decoded = json_decode($raw, TRUE);
+  if (!is_array($decoded) || empty($decoded['icons'])) {
+    return [];
+  }
+
+  $icons = [];
+  foreach ($decoded['icons'] as $icon) {
+    if (!is_string($icon)) {
+      continue;
+    }
+    $icon = trim(strtolower($icon));
+    if ($icon === '' || !str_starts_with($icon, 'fa-')) {
+      continue;
+    }
+    if (in_array($icon, ['fa-solid', 'fa-regular', 'fa-brands', 'fa-duotone', 'fa-light', 'fa-thin', 'fa-sharp', 'fa-classic'], TRUE)) {
+      continue;
+    }
+    $icons[] = $icon;
+  }
+
+  return array_values(array_unique($icons));
+}
+
+/**
+ * Return Font Awesome icon allowed-values from the generated JSON index.
+ */
+function button_link_get_fontawesome_icon_allowed_values() {
+
+  $subset = button_link_get_fontawesome_allowed_icons_subset();
+
+  if ($subset) {
+
+    $allowed_values = [];
+
+    foreach ($subset as $icon) {
+
+      $label = button_link_build_fa_icon_label($icon);
+      $allowed_values[$icon] = $label;
+
+      // Accept alternate styleful variants.
+      if (str_contains($icon, ' ')) {
+        // Also register non-fa-classic variants for backward compatibility.
+        if (str_starts_with($icon, 'fa-classic ')) {
+          $noClassic = substr($icon, strlen('fa-classic '));
+          $allowed_values[$noClassic] = $allowed_values[$noClassic] ?? $label;
+        }
+      }
+      else {
+        $token = button_link_extract_fa_icon_token($icon);
+        if ($token !== NULL) {
+          foreach (['fa-classic fa-solid', 'fa-classic fa-regular', 'fa-solid', 'fa-regular', 'fa-duotone'] as $style) {
+            $styleful = $style . ' ' . $token;
+            $allowed_values[$styleful] = $allowed_values[$styleful] ?? $label;
+          }
+          $duotoneSolid = 'fa-duotone fa-solid ' . $token;
+          $allowed_values[$duotoneSolid] = $allowed_values[$duotoneSolid] ?? $label;
+        }
+      }
+    }
+
+    return $allowed_values;
+  }
+
+  $json_path = button_link_get_fontawesome_icons_json_path();
+
+  if ($json_path === NULL) {
+    return [];
+  }
+
+  $raw = file_get_contents($json_path);
+
+  if ($raw === FALSE) {
+    return [];
+  }
+
+  $decoded = json_decode($raw, TRUE);
+
+  if (!is_array($decoded) || empty($decoded['icons'])) {
+    return [];
+  }
+
+  $allowed_values = [];
+
+  foreach ($decoded['icons'] as $icon) {
+
+    if (!is_string($icon) || !str_starts_with($icon, 'fa-')) {
+      continue;
+    }
+
+    $allowed_values[$icon] = button_link_build_fa_icon_label($icon);
+  }
+
+  return $allowed_values;
+}
+
+/**
+ * Find the generated Font Awesome icons JSON file path.
+ */
+function button_link_get_fontawesome_icons_json_path() {
+
+  $theme_paths = button_link_get_candidate_theme_paths();
+
+  foreach ($theme_paths as $theme_path) {
+
+    $path = DRUPAL_ROOT . '/' . $theme_path . '/build/fontawesome-icons.json';
+
+    if (file_exists($path)) {
+      return $path;
+    }
+  }
+
+  return NULL;
+}
+
+/**
+ * Get the active custom theme name from /themes/custom/ directory.
+ *
+ * @return string|null
+ *   The theme name, or NULL if not found.
+ */
+function _button_link_get_active_theme_name(): ?string {
+  try {
+    $activeTheme = \Drupal::service('theme.manager')->getActiveTheme();
+    if ($activeTheme && $activeTheme->isBaseTheme() === FALSE) {
+      return $activeTheme->getName();
+    }
+  } catch (\Throwable $e) {
+    // Silently fail and try default theme.
+  }
+
+  try {
+    $defaultTheme = \Drupal::config('system.theme')->get('default');
+    if ($defaultTheme) {
+      return $defaultTheme;
+    }
+  } catch (\Throwable $e) {
+    // Silently fail.
+  }
+
+  return NULL;
+}
+
+/**
+ * Get a URL to the generated Font Awesome icon index.
+ */
+function button_link_get_fontawesome_icons_url() {
+
+  // Return the local path to the Font Awesome icons JSON.
+  $themeName = _button_link_get_active_theme_name();
+  if (!$themeName) {
+    return '';
+  }
+  return base_path() . 'themes/' . $themeName . '/build/fontawesome-icons.json';
+}
+
+/**
+ * Get a URL to the self-hosted Font Awesome CSS bundle.
+ */
+function button_link_get_fontawesome_css_url() {
+
+  // Return the local path to the Font Awesome CSS bundle.
+  $themeName = _button_link_get_active_theme_name();
+  if (!$themeName) {
+    return '';
+  }
+  return base_path() . 'themes/' . $themeName . '/build/css/fontawesome.css';
+}
+
+/**
+ * Get the theme library name that provides Font Awesome CSS.
+ */
+function button_link_get_fontawesome_theme_library_name() {
+
+  // Return the local theme library name for Font Awesome icons.
+  $themeName = _button_link_get_active_theme_name();
+  if (!$themeName) {
+    return '';
+  }
+  return $themeName . '/icons.font-awesome';
+}
+
+/**
+ * Return theme paths to consider.
+ */
+function button_link_get_candidate_theme_paths(): array {
+
+  $paths = [];
+  $seen = [];
+
+  $add_theme = function (?string $theme_name) use (&$paths, &$seen): void {
+
+    if (!$theme_name || isset($seen[$theme_name])) {
+      return;
+    }
+
+    $seen[$theme_name] = TRUE;
+
+    $path = button_link_get_theme_path($theme_name);
+
+    if ($path !== NULL) {
+      $paths[] = $path;
+    }
+  };
+
+  try {
+
+    if (class_exists('\\Drupal') && \Drupal::hasContainer()) {
+
+      $default_theme = \Drupal::config('system.theme')->get('default');
+
+      $add_theme(is_string($default_theme) ? $default_theme : NULL);
+    }
+
+  }
+  catch (\Throwable $e) {
+  }
+
+  try {
+
+    if (class_exists('\\Drupal') && \Drupal::hasContainer() && \Drupal::getContainer()->has('theme.manager')) {
+
+      $active = \Drupal::service('theme.manager')->getActiveTheme();
+
+      if ($active) {
+        $add_theme((string) $active->getName());
+      }
+    }
+
+  }
+  catch (\Throwable $e) {
+  }
+
+  try {
+
+    if (class_exists('\\Drupal') && \Drupal::hasContainer() && \Drupal::getContainer()->has('extension.list.theme')) {
+
+      $themes = \Drupal::service('extension.list.theme')->getList();
+
+      foreach (array_keys($themes) as $theme_name) {
+        $add_theme((string) $theme_name);
+      }
+    }
+
+  }
+  catch (\Throwable $e) {
+  }
+
+  return $paths;
+}
+
+/**
+ * Get the configured Font Awesome kit URL.
+ */
+function button_link_get_configured_kit_url(): string {
+  $kit_url = '';
+  try {
+    if (class_exists('\\Drupal') && \Drupal::hasContainer() && \Drupal::hasService('config.factory')) {
+      $kit_url = (string) \Drupal::config('button_link.settings')->get('kit_url');
+      $kit_url = trim($kit_url);
+    }
+  }
+  catch (\Throwable $e) {
+  }
+
+  if ($kit_url === '') {
+    $kit_url = (string) (getenv('FONT_AWESOME_KIT_URL') ?: '');
+    $kit_url = trim($kit_url);
+  }
+
+  return $kit_url;
+}
+
+/**
+ * Implements hook_page_attachments() to inject Font Awesome kit settings.
+ */
+function button_link_page_attachments(array &$attachments) {
+  // Get the kit URL from config (preferred) or environment.
+  $kit_url = button_link_get_configured_kit_url();
+
+  // Provider-backed endpoint returning the style-aware kit subset.
+  $kit_icons_url = base_path() . 'button-link/fontawesome-kit-icons.json';
+
+  // Add drupalSettings globally.
+  $themeName = _button_link_get_active_theme_name();
+  $attachments['#attached']['drupalSettings']['buttonLink'] = [
+    'fontAwesomeKitUrl' => $kit_url,
+    'fontAwesomeKitIconsUrl' => $kit_icons_url,
+    'fontAwesomeIconsUrl' => button_link_get_fontawesome_icons_url(),
+    'fontAwesomeCssUrl' => button_link_get_fontawesome_css_url(),
+    'themeName' => $themeName,
+    'defaultClassicStyle' => 'solid',
+  ];
+}
+/**
+ * Check if the Font Awesome kit is enabled.
+ *
+ * @return bool
+ *   TRUE if a kit URL is set in the environment or drupalSettings.
+ */
+function button_link_is_fontawesome_kit_enabled(): bool {
+  return button_link_get_configured_kit_url() !== '';
+}
+
+/**
+ * Implements hook_page_attachments_alter().
+ *
+ * When a kit URL is configured, forcibly remove any self-hosted Font Awesome
+ * CSS attachments (theme library or html_head_link fallbacks).
+ */
+function button_link_page_attachments_alter(array &$attachments): void {
+  $kit_url = button_link_get_configured_kit_url();
+  if ($kit_url === '') {
+    return;
+  }
+
+  // Remove the theme-provided full Font Awesome CSS library.
+  if (isset($attachments['#attached']['library']) && is_array($attachments['#attached']['library'])) {
+    $themeName = _button_link_get_active_theme_name();
+    $themeLibrary = $themeName ? $themeName . '/icons.font-awesome' : '';
+    $attachments['#attached']['library'] = array_values(array_filter(
+      $attachments['#attached']['library'],
+      static function ($lib) use ($themeLibrary): bool {
+        return $lib !== $themeLibrary;
+      },
+    ));
+  }
+
+  // Remove any fallback html_head_link stylesheet entries pointing at the
+  // self-hosted CSS bundle.
+  if (isset($attachments['#attached']['html_head_link']) && is_array($attachments['#attached']['html_head_link'])) {
+    $attachments['#attached']['html_head_link'] = array_values(array_filter(
+      $attachments['#attached']['html_head_link'],
+      static function ($item): bool {
+        // Expected format: [ [ 'rel' => 'stylesheet', 'href' => '...' ], 'key' ]
+        if (!is_array($item) || !isset($item[0]) || !is_array($item[0])) {
+          return TRUE;
+        }
+        $href = isset($item[0]['href']) && is_string($item[0]['href']) ? $item[0]['href'] : '';
+        $key = isset($item[1]) && is_string($item[1]) ? $item[1] : '';
+        if ($key === 'button_link.fontawesome') {
+          return FALSE;
+        }
+        if ($href !== '' && str_contains($href, '/build/css/fontawesome.css')) {
+          return FALSE;
+        }
+        return TRUE;
+      },
+    ));
+  }
+}
+
+/**
+ * Post-update: Sync Font Awesome kit icons by updating the npm package.
+ *
+ * This runs after module updates to ensure the local kit package is in sync
+ * with the current FA kit. Should be run as part of `drush deploy`.
+ */
+function button_link_post_update_sync_fontawesome_kit(): void {
+  // Get the configured kit URL and extract the kit ID from it.
+  $kitUrl = (string) \Drupal::config('button_link.settings')->get('kit_url');
+  if (!$kitUrl || !preg_match('#/([a-f0-9]+)\.(js|css)$#i', $kitUrl, $m)) {
+    \Drupal::logger('button_link')->warning('FA kit sync skipped: no kit URL configured');
+    return;
+  }
+
+  $kitId = $m[1];
+  $kitPackage = '@awesome.me/kit-' . $kitId;
+  
+  // Update the FA kit npm package to pull in any newly-added icons.
+  $themeName = _button_link_get_active_theme_name();
+  if (!$themeName) {
+    \Drupal::logger('button_link')->warning('Cannot sync FA kit: active theme name not found');
+    return;
+  }
+  $themeDir = \Drupal::root() . '/themes/' . $themeName;
+  
+  if (!is_dir($themeDir)) {
+    \Drupal::logger('button_link')->warning(
+      'Cannot sync FA kit: theme directory not found at @dir',
+      ['@dir' => $themeDir],
+    );
+    return;
+  }
+
+  // The sync function will handle package.json updates below
+
+  \Drupal::logger('button_link')->notice('Updating FA kit in package.json: @pkg', ['@pkg' => $kitPackage]);
+
+  $packageJsonPath = $themeDir . '/package.json';
+  if (!is_file($packageJsonPath)) {
+    \Drupal::logger('button_link')->error(
+      'Cannot sync FA kit: package.json not found at @path',
+      ['@path' => $packageJsonPath],
+    );
+    return;
+  }
+
+  try {
+    $packageRaw = file_get_contents($packageJsonPath);
+    if ($packageRaw === FALSE || $packageRaw === '') {
+      throw new \Exception('Failed to read package.json');
+    }
+
+    $packageData = json_decode($packageRaw, TRUE);
+    if (!is_array($packageData)) {
+      throw new \Exception('Invalid package.json format');
+    }
+
+    // Ensure dependencies object exists
+    if (!isset($packageData['dependencies']) || !is_array($packageData['dependencies'])) {
+      $packageData['dependencies'] = [];
+    }
+
+    // Remove stale kit packages
+    $staleKitPackages = [];
+    foreach (array_keys($packageData['dependencies']) as $dependencyName) {
+      if (
+        is_string($dependencyName)
+        && str_starts_with($dependencyName, '@awesome.me/kit-')
+        && $dependencyName !== $kitPackage
+      ) {
+        $staleKitPackages[] = $dependencyName;
+        unset($packageData['dependencies'][$dependencyName]);
+      }
+    }
+
+    if ($staleKitPackages) {
+      \Drupal::logger('button_link')->info(
+        'Removed stale FA kit packages: @pkgs',
+        ['@pkgs' => implode(', ', $staleKitPackages)],
+      );
+    }
+
+    // Update the current kit package to latest
+    $packageData['dependencies'][$kitPackage] = 'latest';
+
+    // Write updated package.json
+    $updatedJson = json_encode($packageData, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES) . "\n";
+    if (file_put_contents($packageJsonPath, $updatedJson) === FALSE) {
+      throw new \Exception('Failed to write package.json');
+    }
+
+    \Drupal::logger('button_link')->info(
+      'Updated @pkg in package.json to ^1.0.0',
+      ['@pkg' => $kitPackage],
+    );
+
+    // Attempt to update the package using pnpm
+    // This will work if the package was already installed once (it's in the lock file & cache)
+    $projectRoot = \Drupal::root();
+    $process = new \Symfony\Component\Process\Process(
+      ['pnpm', 'update', '-C', $themeDir, $kitPackage],
+      $projectRoot,
+    );
+    $process->setTimeout(300);
+    $process->run();
+
+    if ($process->isSuccessful()) {
+      \Drupal::logger('button_link')->info('FA kit package updated to latest version successfully');
+    } else {
+      $errorOutput = $process->getErrorOutput() ?: $process->getOutput();
+      // Don't fail if authentication is required - user can run pnpm update manually
+      if (str_contains($errorOutput, '404') || str_contains($errorOutput, 'authorization header')) {
+        \Drupal::logger('button_link')->info(
+          'FA kit requires authentication to update. Run "cd @dir && pnpm update @pkg" with Font Awesome credentials.',
+          ['@dir' => $themeDir, '@pkg' => $kitPackage],
+        );
+      } else {
+        \Drupal::logger('button_link')->warning(
+          'Failed to update FA kit package: @output',
+          ['@output' => $errorOutput],
+        );
+      }
+    }
+  } catch (\Exception $e) {
+    \Drupal::logger('button_link')->error(
+      'Error updating FA kit: @message',
+      ['@message' => $e->getMessage()],
+    );
+  }
+}
+
+/**
+ * Implements hook_form_alter() to hide button icon fields when FA kit is not configured.
+ */
+function button_link_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
+  // Check if Font Awesome kit URL is configured
+  $kitUrl = (string) \Drupal::config('button_link.settings')->get('kit_url');
+  $kitUrl = trim($kitUrl);
+  
+  // If kit URL is not configured, hide icon-related fields from all forms
+  if (empty($kitUrl)) {
+    // Recursively search for and hide button icon fields
+    _button_link_hide_icon_fields($form);
+  }
+}
+
+/**
+ * Helper function to recursively hide button icon fields.
+ */
+function _button_link_hide_icon_fields(&$element) {
+  if (is_array($element)) {
+    foreach ($element as $key => &$value) {
+      if ($key === 'field_button_icon' || $key === 'field_button_icon_position') {
+        $value['#access'] = FALSE;
+      } elseif (is_array($value) && $key !== '#') {
+        _button_link_hide_icon_fields($value);
+      }
+    }
+  }
+}

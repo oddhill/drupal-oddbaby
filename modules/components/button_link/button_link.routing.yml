@@ -1,0 +1,8 @@
+button_link.fontawesome_kit_icons:
+  path: '/button-link/fontawesome-kit-icons.json'
+  defaults:
+    _controller: '\Drupal\button_link\Controller\FontAwesomeKitIconsController::icons'
+  requirements:
+    _permission: 'access content'
+  options:
+    _format: 'json'

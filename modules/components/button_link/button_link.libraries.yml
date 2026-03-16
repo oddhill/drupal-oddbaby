@@ -1,0 +1,19 @@
+icon_picker:
+  css:
+    theme:
+      css/icon-picker.css: { preprocess: false }
+  js:
+    js/icon-picker.js: { preprocess: false }
+  dependencies:
+  - button_link/fontawesome_kit
+  - core/drupal
+  - core/once
+  - core/drupalSettings
+
+fontawesome_kit:
+  js:
+    js/fontawesome-kit-loader.js: { preprocess: false }
+  dependencies:
+  - core/drupal
+  - core/once
+  - core/drupalSettings

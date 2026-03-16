@@ -1,0 +1,15 @@
+services:
+  button_link.fa_kit_icon_provider:
+    class: Drupal\button_link\FontAwesomeKitIconProvider
+    arguments: [ '@http_client', '@config.factory' ]
+
+  button_link.twig.fontawesome:
+    class: Drupal\button_link\Twig\ButtonLinkFontAwesomeTwigExtension
+    arguments: [ '@button_link.fa_kit_icon_provider', '@config.factory' ]
+    tags:
+    - { name: twig.extension }
+
+  button_link.csp_subscriber:
+    class: Drupal\button_link\EventSubscriber\ButtonLinkCspSubscriber
+    tags:
+    - { name: event_subscriber }

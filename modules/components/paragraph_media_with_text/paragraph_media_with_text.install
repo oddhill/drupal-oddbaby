@@ -1,0 +1,192 @@
+<?php
+
+use Drupal\paragraphs\Entity\ParagraphsType;
+
+/**
+ * Implements hook_install().
+ */
+function paragraph_media_with_text_install() {
+  // Create the paragraph type if it doesn't exist.
+  $paragraph_type = ParagraphsType::load('media_with_text');
+  if (!$paragraph_type) {
+    $paragraph_type = ParagraphsType::create([
+      'id' => 'media_with_text',
+      'label' => 'Media + Text',
+      'description' => 'Paragraph with media left and text+button right.',
+    ]);
+    $paragraph_type->save();
+  }
+
+  // Ensure fields exist and are enabled in both Form display and Manage display.
+  _paragraph_media_with_text_add_fields($paragraph_type);
+  _paragraph_media_with_text_enable_fields_in_form_display($paragraph_type);
+  _paragraph_media_with_text_enable_fields_in_view_display($paragraph_type);
+}
+
+/**
+ * Restrict the Media reference field to specific Media types.
+ */
+function paragraph_media_with_text_update_9001() {
+  $field_config = \Drupal\field\Entity\FieldConfig::load('paragraph.media_with_text.field_media');
+  if (!$field_config) {
+    return;
+  }
+
+  $allowed_media_bundles = [
+    'document' => 'document',
+    'graphic' => 'graphic',
+    'image' => 'image',
+    'remote_video' => 'remote_video',
+  ];
+
+  $settings = $field_config->getSettings();
+  $settings['handler'] = 'default:media';
+  $settings['handler_settings'] = $settings['handler_settings'] ?? [];
+  $settings['handler_settings']['target_bundles'] = $allowed_media_bundles;
+  $field_config->set('settings', $settings)->save();
+}
+
+/**
+ * Use the Media Library widget (Add media button) for field_media.
+ */
+function paragraph_media_with_text_update_9002() {
+  if (!\Drupal::moduleHandler()->moduleExists('media_library')) {
+    \Drupal::service('module_installer')->install(['media_library'], TRUE);
+  }
+
+  $form_display = \Drupal\Core\Entity\Entity\EntityFormDisplay::load('paragraph.media_with_text.default');
+  if (!$form_display) {
+    return;
+  }
+
+  $form_display->setComponent('field_media', [
+    'type' => 'media_library_widget',
+    'weight' => 0,
+    'region' => 'content',
+    'settings' => [
+      'media_types' => [
+        'document',
+        'graphic',
+        'image',
+        'remote_video',
+      ],
+    ],
+    'third_party_settings' => [],
+  ]);
+
+  $form_display->save();
+}
+
+/**
+ * Add button variant field (link vs button).
+ */
+function paragraph_media_with_text_update_9003(): void {
+  $paragraph_type = ParagraphsType::load('media_with_text');
+  if (!$paragraph_type) {
+    return;
+  }
+
+  _paragraph_media_with_text_add_fields($paragraph_type);
+  _paragraph_media_with_text_enable_fields_in_form_display($paragraph_type);
+  _paragraph_media_with_text_enable_fields_in_view_display($paragraph_type);
+}
+
+/**
+ * Add CTA label tweaks and open-in-new-window option.
+ */
+function paragraph_media_with_text_update_9004(): void {
+  $paragraph_type = ParagraphsType::load('media_with_text');
+  if (!$paragraph_type) {
+    return;
+  }
+
+  _paragraph_media_with_text_add_fields($paragraph_type);
+  _paragraph_media_with_text_enable_fields_in_form_display($paragraph_type);
+  _paragraph_media_with_text_enable_fields_in_view_display($paragraph_type);
+}
+
+/**
+ * Fix CTA labels/defaults and remove empty (N/A) option.
+ */
+function paragraph_media_with_text_update_9005(): void {
+  $paragraph_type = ParagraphsType::load('media_with_text');
+  if (!$paragraph_type) {
+    return;
+  }
+
+  _paragraph_media_with_text_add_fields($paragraph_type);
+  _paragraph_media_with_text_enable_fields_in_form_display($paragraph_type);
+  _paragraph_media_with_text_enable_fields_in_view_display($paragraph_type);
+}
+
+/**
+ * Group Call-to-Action fields on the edit form (Field Group).
+ */
+function paragraph_media_with_text_update_9006(): void {
+  if (!\Drupal::moduleHandler()->moduleExists('field_group')) {
+    return;
+  }
+
+  $form_display = \Drupal\Core\Entity\Entity\EntityFormDisplay::load('paragraph.media_with_text.default');
+  if (!$form_display) {
+    return;
+  }
+
+  $group_key = 'group_call_to_action';
+  $groups = $form_display->getThirdPartySettings('field_group');
+
+  $groups[$group_key] = [
+    'children' => [
+      'field_button_link',
+      'field_button_variant',
+      'field_button_new_window',
+      'field_button_icon',
+      'field_button_icon_position',
+    ],
+    'label' => 'Call-to-Action',
+    'description' => '',
+    'parent_name' => '',
+    'weight' => 20,
+    'format_type' => 'details',
+    'format_settings' => [
+      'open' => TRUE,
+      'required_fields' => TRUE,
+      'classes' => '',
+      'id' => '',
+    ],
+    'region' => 'content',
+  ];
+
+  $form_display->setThirdPartySetting('field_group', $group_key, $groups[$group_key]);
+  $form_display->save();
+}
+
+/**
+ * Enable CTA icon fields in the edit form + field group.
+ */
+function paragraph_media_with_text_update_9008(): void {
+  $paragraph_type = ParagraphsType::load('media_with_text');
+  if (!$paragraph_type) {
+    return;
+  }
+
+  _paragraph_media_with_text_add_fields($paragraph_type);
+  _paragraph_media_with_text_enable_fields_in_form_display($paragraph_type);
+  _paragraph_media_with_text_enable_fields_in_view_display($paragraph_type);
+
+  // Re-apply field grouping (Field Group) if available.
+  paragraph_media_with_text_update_9006();
+}
+
+/**
+ * Add Font Awesome icon and position fields to Media With Text paragraph.
+ */
+function paragraph_media_with_text_update_9007() {
+  $paragraph_type = ParagraphsType::load('media_with_text');
+  if (!$paragraph_type) {
+    return;
+  }
+  _paragraph_media_with_text_add_fields($paragraph_type);
+  _paragraph_media_with_text_enable_fields_in_form_display($paragraph_type);
+  _paragraph_media_with_text_enable_fields_in_view_display($paragraph_type);
+}

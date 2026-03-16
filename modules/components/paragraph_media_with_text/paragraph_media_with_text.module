@@ -1,0 +1,385 @@
+<?php
+
+/**
+ * @file
+ * Contains helper functions for the Paragraph Media With Text module.
+ */
+
+/**
+ * Implements hook_page_attachments().
+ */
+function paragraph_media_with_text_page_attachments(array &$attachments): void {
+  $attachments['#attached']['drupalSettings']['oddhillComponents']['paragraph_media_with_text'] = TRUE;
+}
+
+/**
+ * Adds fields to a paragraph type.
+ *
+ * @param \Drupal\paragraphs\Entity\ParagraphsType $paragraph_type
+ *   The paragraph type entity.
+ */
+function _paragraph_media_with_text_add_fields(\Drupal\paragraphs\Entity\ParagraphsType $paragraph_type) {
+  $allowed_media_bundles = [
+    'document' => 'document',
+    'graphic' => 'graphic',
+    'image' => 'image',
+    'remote_video' => 'remote_video',
+  ];
+
+  $fields = [
+    // New: Media reference (replaces legacy field_image).
+    'field_media' => [
+      'storage' => [
+        'type' => 'entity_reference',
+        'settings' => ['target_type' => 'media'],
+        'cardinality' => 1,
+      ],
+      'instance' => [
+        'label' => 'Media',
+        'settings' => [
+          'handler' => 'default:media',
+          'handler_settings' => [
+            'target_bundles' => $allowed_media_bundles,
+          ],
+        ],
+      ],
+    ],
+    'field_heading' => [
+      'storage' => ['type' => 'string', 'cardinality' => 1],
+      'instance' => ['label' => 'Heading'],
+    ],
+    'field_body' => [
+      'storage' => ['type' => 'text_long', 'cardinality' => 1],
+      'instance' => ['label' => 'Body'],
+    ],
+    // New: single field that stores both URL + link title.
+    'field_button_link' => [
+      'storage' => ['type' => 'link', 'cardinality' => 1],
+      'instance' => ['label' => 'Call-to-Action'],
+    ],
+
+    // New: toggle whether to render the CTA as an <a> or <button>.
+    'field_button_variant' => [
+      'storage' => [
+        'type' => 'list_string',
+        'settings' => [
+          'allowed_values' => [
+            'link' => 'Link',
+            'button' => 'Button',
+          ],
+        ],
+        'cardinality' => 1,
+        'default_value' => [
+          ['value' => 'link'],
+        ],
+      ],
+      'instance' => [
+        'label' => 'Call-to-Action type',
+      ],
+    ],
+
+    'field_button_new_window' => [
+      'storage' => ['type' => 'boolean', 'cardinality' => 1],
+      'instance' => [
+        'label' => 'Open in new window',
+        'settings' => [
+          'on_label' => 'Open in new window',
+          'off_label' => 'Same window',
+        ],
+      ],
+    ],
+      // Font Awesome icon (stored as list_string for validation).
+      'field_button_icon' => [
+        'storage' => [
+          'type' => 'list_string',
+          'settings' => [
+            'allowed_values' => [
+              // Fallback minimal list; will be expanded from JSON when present.
+              'fa-arrow-right' => 'Arrow Right',
+            ],
+          ],
+          'cardinality' => 1,
+        ],
+        'instance' => [
+          'label' => 'Button Icon',
+        ],
+      ],
+      // Icon position dropdown.
+      'field_button_icon_position' => [
+        'storage' => [
+          'type' => 'list_string',
+          'settings' => [
+            'allowed_values' => [
+              'left' => 'Left',
+              'right' => 'Right',
+            ],
+          ],
+          'cardinality' => 1,
+        ],
+        'instance' => [
+          'label' => 'Icon Position',
+        ],
+      ],
+  ];
+
+  foreach ($fields as $name => $info) {
+    // Field storage
+    if (!\Drupal\field\Entity\FieldStorageConfig::loadByName('paragraph', $name)) {
+      $storage = [
+        'field_name' => $name,
+        'entity_type' => 'paragraph',
+        'type' => $info['storage']['type'],
+      ];
+
+      if (!empty($info['storage']['settings'])) {
+        $storage['settings'] = $info['storage']['settings'];
+      }
+      if (isset($info['storage']['cardinality'])) {
+        $storage['cardinality'] = $info['storage']['cardinality'];
+      }
+
+      \Drupal\field\Entity\FieldStorageConfig::create($storage)->save();
+    }
+
+    // Field instance
+    if (!\Drupal\field\Entity\FieldConfig::load('paragraph.' . $paragraph_type->id() . '.' . $name)) {
+      $instance = [
+        'field_name' => $name,
+        'entity_type' => 'paragraph',
+        'bundle' => $paragraph_type->id(),
+        'label' => $info['instance']['label'],
+      ];
+      if (!empty($info['instance']['settings'])) {
+        $instance['settings'] = $info['instance']['settings'];
+      }
+      \Drupal\field\Entity\FieldConfig::create($instance)->save();
+    }
+
+    // If the module is re-installed or updated, ensure labels/defaults match
+    // what the component expects.
+    if (in_array($name, ['field_button_link', 'field_button_variant', 'field_button_new_window'], TRUE)) {
+      $field_config = \Drupal\field\Entity\FieldConfig::load('paragraph.' . $paragraph_type->id() . '.' . $name);
+      if ($field_config) {
+        if ($name === 'field_button_link') {
+          $field_config->setLabel('Call-to-Action');
+        }
+
+        if ($name === 'field_button_variant') {
+          $field_config->setLabel('Call-to-Action type');
+          // Make required to remove the empty/N/A option.
+          $field_config->setRequired(TRUE);
+          // Default to link.
+          $field_config->setDefaultValue([['value' => 'link']]);
+        }
+
+        if ($name === 'field_button_new_window') {
+          $field_config->setLabel('Open in new window');
+        }
+
+        $field_config->save();
+      }
+    }
+
+    // If the module is re-installed without fully removing field config, ensure
+    // our expected settings are applied.
+    if ($name === 'field_media') {
+      $field_config = \Drupal\field\Entity\FieldConfig::load('paragraph.' . $paragraph_type->id() . '.field_media');
+      if ($field_config) {
+        $settings = $field_config->getSettings();
+        $settings['handler'] = 'default:media';
+        $settings['handler_settings'] = $settings['handler_settings'] ?? [];
+        $settings['handler_settings']['target_bundles'] = $allowed_media_bundles;
+        $field_config->set('settings', $settings)->save();
+      }
+    }
+
+    if ($name === 'field_button_variant') {
+      $storage = \Drupal\field\Entity\FieldStorageConfig::loadByName('paragraph', 'field_button_variant');
+      if ($storage) {
+        $settings = $storage->getSettings();
+        $settings['allowed_values'] = [
+          'link' => 'Link',
+          'button' => 'Button',
+        ];
+        $storage->set('settings', $settings)->save();
+      }
+    }
+
+    if ($name === 'field_button_icon') {
+      $storage = \Drupal\field\Entity\FieldStorageConfig::loadByName('paragraph', 'field_button_icon');
+      if ($storage && $storage->getType() === 'list_string') {
+        $allowed_values = button_link_get_fontawesome_icon_allowed_values();
+        if ($allowed_values) {
+          $settings = $storage->getSettings();
+          $settings['allowed_values'] = $allowed_values;
+          $storage->set('settings', $settings)->save();
+        }
+      }
+    }
+  }
+}
+
+/**
+ * Enables all fields for the paragraph type in its edit form.
+ *
+ * @param \Drupal\paragraphs\Entity\ParagraphsType $paragraph_type
+ *   The paragraph type entity.
+ */
+function _paragraph_media_with_text_enable_fields_in_form_display(\Drupal\paragraphs\Entity\ParagraphsType $paragraph_type) {
+  $form_display_id = 'paragraph.' . $paragraph_type->id() . '.default';
+  $form_display = \Drupal\Core\Entity\Entity\EntityFormDisplay::load($form_display_id);
+
+  if (!$form_display) {
+    $form_display = \Drupal\Core\Entity\Entity\EntityFormDisplay::create([
+      'targetEntityType' => 'paragraph',
+      'bundle' => $paragraph_type->id(),
+      'mode' => 'default',
+      'status' => TRUE,
+    ]);
+  }
+
+  $fields = [
+    'field_media' => 'media_library_widget',
+    'field_heading' => 'string_textfield',
+    'field_body' => 'text_textarea',
+    'field_button_link' => 'link_default',
+    'field_button_variant' => 'options_buttons',
+    'field_button_new_window' => 'boolean_checkbox',
+    'field_button_icon' => 'options_select',
+    'field_button_icon_position' => 'options_select',
+  ];
+
+  // Legacy fields (kept for safety, but disabled in the UI).
+  foreach (['field_image', 'field_button_text', 'field_button_url'] as $legacy_field) {
+    if ($form_display->getComponent($legacy_field)) {
+      $form_display->removeComponent($legacy_field);
+    }
+  }
+
+  $weight = 0;
+  foreach ($fields as $field_name => $widget_type) {
+    $settings = [];
+    if ($field_name === 'field_media') {
+      $settings = [
+        'media_types' => [
+          'document',
+          'graphic',
+          'image',
+          'remote_video',
+        ],
+      ];
+    }
+
+    $form_display->setComponent($field_name, [
+      'type' => $widget_type,
+      'weight' => $weight++,
+      'region' => 'content',
+      'settings' => $settings,
+      'status' => TRUE,
+    ]);
+  }
+
+  $form_display->save();
+}
+
+/**
+ * Enables all fields for the paragraph type in its default view display.
+ *
+ * This controls what is enabled under "Manage display" for the paragraph type.
+ *
+ * @param \Drupal\paragraphs\Entity\ParagraphsType $paragraph_type
+ *   The paragraph type entity.
+ */
+function _paragraph_media_with_text_enable_fields_in_view_display(\Drupal\paragraphs\Entity\ParagraphsType $paragraph_type) {
+  $view_display_id = 'paragraph.' . $paragraph_type->id() . '.default';
+  $view_display = \Drupal\Core\Entity\Entity\EntityViewDisplay::load($view_display_id);
+
+  if (!$view_display) {
+    $view_display = \Drupal\Core\Entity\Entity\EntityViewDisplay::create([
+      'targetEntityType' => 'paragraph',
+      'bundle' => $paragraph_type->id(),
+      'mode' => 'default',
+      'status' => TRUE,
+    ]);
+  }
+
+  $fields = [
+    'field_media' => 'entity_reference_entity_view',
+    'field_heading' => 'string',
+    'field_body' => 'text_default',
+    'field_button_link' => 'link',
+  ];
+
+  $weight = 0;
+  foreach ($fields as $field_name => $formatter_type) {
+    $settings = [];
+    if ($field_name === 'field_media') {
+      $settings = [
+        'view_mode' => 'default',
+        'link' => FALSE,
+      ];
+    }
+
+    $view_display->setComponent($field_name, [
+      'type' => $formatter_type,
+      'label' => 'hidden',
+      'weight' => $weight++,
+      'region' => 'content',
+      'settings' => $settings,
+      'third_party_settings' => [],
+    ]);
+  }
+
+  $view_display->save();
+}
+
+/**
+ * Implements hook_field_widget_single_element_WIDGET_TYPE_form_alter().
+ */
+function paragraph_media_with_text_field_widget_single_element_link_default_form_alter(array &$element, \Drupal\Core\Form\FormStateInterface $form_state, array $context) {
+  $field_definition = $context['items']->getFieldDefinition();
+  if ($field_definition->getName() !== 'field_button_link') {
+    return;
+  }
+
+  $entity = $context['items']->getEntity();
+  if ($entity->getEntityTypeId() !== 'paragraph' || $entity->bundle() !== 'media_with_text') {
+    return;
+  }
+
+  if (isset($element['title'])) {
+    $element['title']['#title'] = \Drupal::translation()->translate('Call-to-Action text');
+  }
+
+  if (isset($element['uri'])) {
+    $element['uri']['#title'] = \Drupal::translation()->translate('Call-to-Action URL');
+  }
+}
+
+/**
+ * Implements hook_field_widget_single_element_WIDGET_TYPE_form_alter().
+ */
+function paragraph_media_with_text_field_widget_single_element_options_select_form_alter(array &$element, \Drupal\Core\Form\FormStateInterface $form_state, array $context): void {
+  $field_definition = $context['items']->getFieldDefinition();
+  if ($field_definition->getName() !== 'field_button_icon') {
+    return;
+  }
+
+  $entity = $context['items']->getEntity();
+  if ($entity->getEntityTypeId() !== 'paragraph' || $entity->bundle() !== 'media_with_text') {
+    return;
+  }
+
+  // Convert to a lightweight textfield to avoid rendering (and validating
+  // against) thousands of <option>s while still storing a list_string value.
+  $element['#type'] = 'textfield';
+  unset($element['#options']);
+
+  $element['#attributes']['class'][] = 'button-link-icon-input';
+  $element['#attributes']['autocomplete'] = 'off';
+  $element['#attributes']['spellcheck'] = 'false';
+  $element['#description'] = \Drupal::translation()->translate('Search and pick a Font Awesome icon (stores a full class like "fa-solid fa-arrow-right").');
+
+  $element['#attached']['library'][] = 'button_link/icon_picker';
+  $element['#element_validate'][] = 'button_link_validate_styleful_icon';
+}
