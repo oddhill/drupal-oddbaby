@@ -27,6 +27,25 @@ by running the following command.
 yarn install
 ```
 
+## Setting Up Custom Component Modules
+
+If you're using the custom component modules included in `modules/components/` (such as `button_link`, `paragraph_media_with_text`, and `paragraph_promo`), you need to set them up in your Drupal installation:
+
+1. **Copy the modules to your Drupal installation:**
+   ```bash
+   cp -r modules/components public/modules/custom/
+   ```
+
+2. **Install the field_group dependency:**
+   ```bash
+   composer require 'drupal/field_group:^4.0'
+   ```
+
+3. **Enable the modules in Drupal:**
+   ```bash
+   drush pm:enable button_link paragraph_media_with_text paragraph_promo
+   ```
+
 ## Usage
 
 While developing you generally want changes to the CSS and JavaScript to be
