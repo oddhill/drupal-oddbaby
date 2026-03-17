@@ -43,3 +43,7 @@
 
 @use './variables/typography';
 
+// Breakpoint styling
+
+@use './variables/responsive';
+@use './variables/breakpoints';
