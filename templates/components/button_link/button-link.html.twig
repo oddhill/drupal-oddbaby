@@ -38,12 +38,13 @@
 
 {% if label_value and url_value %}
   {% set attr = create_attribute(attributes) %}
+  {% set fa_enabled = 'dummy'|button_link_fa_enabled %}
   <a href="{{ url_value.toString }}"{{ attr }}>
-    {% if icon and icon_position == 'left' %}
+    {% if icon and icon_position == 'left' and fa_enabled %}
       <i class="{{ icon|button_link_fa_classes|escape }}" aria-hidden="true"></i>
     {% endif %}
-    {% if icon and icon_position == 'left' %} {% endif %}{{ label_value|escape }}{% if icon and icon_position == 'right' %} {% endif %}
-    {% if icon and icon_position == 'right' %}
+    {% if icon and icon_position == 'left' and fa_enabled %} {% endif %}{{ label_value|escape }}{% if icon and icon_position == 'right' and fa_enabled %} {% endif %}
+    {% if icon and icon_position == 'right' and fa_enabled %}
       <i class="{{ icon|button_link_fa_classes|escape }}" aria-hidden="true"></i>
     {% endif %}
   </a>

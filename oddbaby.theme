@@ -8,3 +8,18 @@ declare(strict_types=1);
  */
 
 require_once __DIR__ . '/oddbaby.suggestions.inc';
+
+/**
+ * Font Awesome Kit URL.
+ *
+ * Set the Font Awesome kit URL to dynamically change which kit is used.
+ * When changed, sync the npm package to the new kit ID.
+ *
+ * Example: "https://kit.fontawesome.com/85187b9626.js"
+ */
+if (!empty($_SERVER['FONT_AWESOME_KIT_URL'])) {
+  $kitUrl = trim((string) $_SERVER['FONT_AWESOME_KIT_URL']);
+  if ($kitUrl !== '' && preg_match('#kit\.fontawesome\.com#i', $kitUrl)) {
+    $config['button_link.settings']['kit_url'] = $kitUrl;
+  }
+}

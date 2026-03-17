@@ -50,3 +50,105 @@ eslint-ci     | Runs eslint and outputs the result to an XML file that can be us
 stylelint     | Runs stylelint and outputs the result to the terminal.
 stylelint-ci  | Runs stylelint and outputs the result to an XML file that can be used in the CI environment.
 <!-- prettier-ignore-end -->
+
+## Setup: Drupal settings.php Configuration (Required for Font Awesome Kit)
+
+To enable theme-level environment variable loading for **Font Awesome Kit Integration**, you need to add code to your Drupal `settings.php` file.
+
+### Adding Theme-Level .env Support
+
+1. Reference the included `settings.example.php` file in this theme directory
+2. Copy the code block from `settings.example.php`
+3. Paste it into your Drupal installation's `settings.php` file (typically at `public/sites/default/settings.php`)
+4. Save the file
+
+Once added, the code will run on every request and automatically load `.env` files from all theme directories. This is **essential** for Font Awesome Kit and other theme modules that depend on environment variables during Drupal's bootstrap process.
+
+**Note:** This setup is a prerequisite for the Font Awesome Kit Integration steps below.
+
+## Font Awesome Kit Integration
+
+The site uses **Font Awesome Pro Kit** for icon selection. Font Awesome CSS is loaded globally on every page, making icons available throughout the site.
+
+### Icon Picker UI vs. Manual Usage
+
+- **Icon Picker UI** (interactive widget): Available only in the `button_link`, `paragraph_media_with_text`, and `paragraph_promo` modules
+- **Manual Font Awesome classes**: Can be used anywhere in any template by using Font Awesome class names directly (e.g., `fa-solid fa-icon-name`)
+
+### Configuration
+
+Configure your Font Awesome kit via environment variables in the `.env` file:
+
+```bash
+# Your Font Awesome Kit URL (get from https://kit.fontawesome.com/)
+FONT_AWESOME_KIT_URL=https://kit.fontawesome.com/YOUR_KIT_ID.js
+
+```
+
+**Before proceeding:** Make sure you've completed the [Setup: Drupal settings.php Configuration](#setup-drupal-settingsphp-configuration) section to enable `.env` file loading.
+
+### Initial Setup
+
+After you've configured the `FONT_AWESOME_KIT_URL` in your `.env` file, run the following command to install and sync the kit:
+
+```bash
+vendor/bin/drush ev "button_link_post_update_sync_fontawesome_kit();"
+```
+
+This will fetch and install your Font Awesome Kit npm package. The icons will then be available in the icon picker within the admin UI for use in the `button_link`, `paragraph_media_with_text`, and `paragraph_promo` modules.
+
+### Switching Kits or Adding New Icons
+
+**To use a different Font Awesome kit:**
+
+1. Update the `FONT_AWESOME_KIT_URL` in `.env` to point to your kit
+2. Rebuild cache, sync the kit package, then rebuild cache again:
+   ```bash
+   vendor/bin/drush cr
+   vendor/bin/drush ev "button_link_post_update_sync_fontawesome_kit();"
+   vendor/bin/drush cr
+   ```
+
+`drush cr` alone does not switch the npm kit package in `node_modules`; run the sync command whenever the kit ID changes.
+
+**After adding or deleting icons to your FA kit:**
+
+1. Run the kit package update:
+   ```bash
+   cd public/themes/custom/{THEME_NAME}
+   yarn add @awesome.me/kit-YOUR_KIT_ID@latest
+   ```
+   (Replace `YOUR_KIT_ID` with the ID from your kit URL)
+
+2. Clear caches:
+   ```bash
+   drush cache:rebuild
+   ```
+
+The new icons will appear in the icon picker.
+
+### How It Works
+
+**Configuration Flow:**
+
+1. `.env` file contains `FONT_AWESOME_KIT_URL`
+2. `settings.php` (with code from `settings.example.php`) loads the `.env` file into `$_SERVER`
+3. `oddbaby.theme` (around line 19) reads `$_SERVER['FONT_AWESOME_KIT_URL']` and passes it to Drupal's config system for `button_link.settings`
+4. `button_link` module uses the configured kit URL to load icons
+
+**Backend Components:**
+
+- **`oddbaby.theme`** - Bridges environment variable to Drupal config
+- **`FontAwesomeKitIconProvider.php`** - Reads icons from the local npm package `@awesome.me/kit-*` (installed in `public/themes/custom/{THEME_NAME}/node_modules/`)
+- **`icon-picker.js`** - Provides searchable UI widget for selecting icons
+- **Endpoint** - `/button-link/fontawesome-kit-icons.json` returns available icons
+
+**Icon Styles:**
+
+Properly prefixed icon class names:
+  - Duotone: `fa-duotone fa-solid fa-{icon}`
+  - Classic solid: `fa-classic fa-solid fa-{icon}`
+  - Classic regular: `fa-classic fa-regular fa-{icon}`
+  - Classic light: `fa-classic fa-light fa-{icon}`
+  - Classic thin: `fa-classic fa-thin fa-{icon}`
+  - Brands: `fa-brands fa-{icon}`
