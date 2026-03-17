@@ -171,3 +171,13 @@ Properly prefixed icon class names:
   - Classic light: `fa-classic fa-light fa-{icon}`
   - Classic thin: `fa-classic fa-thin fa-{icon}`
   - Brands: `fa-brands fa-{icon}`
+
+# Font Awesome Icons in CKEditor 5
+
+CKEditor 5 strips empty inline elements. To use Font Awesome icons in text fields, add a zero-width non-joiner character (`&zwnj;`) inside the `<i>` tag:
+
+```html
+<i class="fa-duotone fa-solid fa-air-conditioner">&zwnj;</i>
+```
+
+This prevents the tag from being treated as empty and getting removed during rendering.
