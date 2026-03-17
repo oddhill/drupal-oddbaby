@@ -1,0 +1,27 @@
+@use '../../../src/scss/variables/responsive';
+
+.sticky {
+  position: sticky;
+  top: var(--sticky-top, 0);
+  z-index: var(--sticky-z, 10);
+}
+
+// Disable sticky on mobile if needed
+.sticky--desktop-only {
+  @media (max-width: (map-get(responsive.$breakpoints, tablet) - 1)) {
+    position: static;
+  }
+}
+
+// Example modifier classes
+// .sticky-header {
+//   width: 100%;
+//   background: white;
+//   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+// }
+
+// .sticky-sidebar {
+//   width: 300px;
+//   max-height: calc(100vh - var(--sticky-top, 0));
+//   overflow-y: auto;
+// }

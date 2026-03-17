@@ -1,0 +1,54 @@
+{#
+  Sticky wrapper component
+  Use as a wrapper around any content to make it stick to the top when scrolling.
+
+  Props:
+  - content: required - the content to make sticky
+  - top: number (px from top, default 0) - distance from top of viewport
+  - z_index: number (default 10)
+  - class: (optional) extra classes for custom styling
+  - disable_mobile: boolean (default false) - disable sticky behavior on mobile
+  
+  Common use cases:
+  - Sticky header navigation
+  - Sticky sidebar
+  - Sticky table headers
+  
+  Usage examples:
+  
+  Header:
+  {% include '@oddbaby/templates/components/sticky/sticky.html.twig' with {
+    content: header_content,
+    top: 0,
+    z_index: 100,
+    class: 'my-header'
+  } %}
+  
+  Sidebar:
+  {% include '@oddbaby/templates/components/sticky/sticky.html.twig' with {
+    content: sidebar_content,
+    top: 20,
+    class: 'my-sidebar'
+  } %}
+#}
+
+{{ attach_library(active_theme() ~ '/sticky') }}
+
+{% set sticky_top = top|default(0) %}
+{% set sticky_z = z_index|default(10) %}
+{% set disable_mobile = disable_mobile|default(false) %}
+
+{% set sticky_classes = ['sticky'] %}
+{% if class %}
+  {% set sticky_classes = sticky_classes|merge([class]) %}
+{% endif %}
+{% if disable_mobile %}
+  {% set sticky_classes = sticky_classes|merge(['sticky--desktop-only']) %}
+{% endif %}
+
+<div 
+  class="{{ sticky_classes|join(' ') }}"
+  style="--sticky-top: {{ sticky_top }}px; --sticky-z: {{ sticky_z }};"
+>
+  {{ content }}
+</div>
