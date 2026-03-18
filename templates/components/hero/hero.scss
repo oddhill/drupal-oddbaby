@@ -1,5 +1,5 @@
 @use '../../../src/scss/variables/color';
-@use '../../../src/scss/variables/responsive';
+@use '../../../src/scss/mixins/breakpoints' as b;
 
 .hero {
   position: relative;
@@ -12,7 +12,7 @@
   color: color.$white;
   text-align: center;
 
-  /** Text alignment */
+  // Text alignment
   &--align-left {
     text-align: left;
 
@@ -37,7 +37,7 @@
     }
   }
 
-  /** Overlay effect */
+  // Overlay effect
   &--overlay {
     &::before {
       position: absolute;
@@ -53,7 +53,7 @@
     }
   }
 
-  /** Background colors (predefined options) */
+  // Background colors (predefined options)
   &--bg-primary {
     background-color: #007bff;
   }
@@ -72,7 +72,7 @@
   }
 }
 
-/** Background media */
+// Background media
 .hero__background {
   position: absolute;
   top: 0;
@@ -104,7 +104,7 @@
   object-fit: cover;
 }
 
-/** Video in split layout (direct child of hero__media) */
+// Video in split layout (direct child of hero__media)
 .hero__media > .hero__video {
   position: absolute;
   top: 0;
@@ -114,7 +114,7 @@
   transform: none;
 }
 
-/** Content container */
+// Content container
 .hero__container {
   position: relative;
   z-index: 2;
@@ -123,11 +123,11 @@
   padding: 1rem;
   margin: 0 auto;
 
-  @media (min-width: map-get(responsive.$breakpoints, tablet)) {
+  @include b.breakpoint-up(sm) {
     padding: 4rem;
   }
 
-  @media (min-width: map-get(responsive.$breakpoints, desktop)) {
+  @include b.breakpoint-up(lg) {
     padding: 6rem;
   }
 }
@@ -138,57 +138,57 @@
   gap: 2rem;
 }
 
-/** Title */
+// Title
 .hero__title {
   margin: 0;
   font-size: 2rem;
   font-weight: 700;
   line-height: 1.2;
 
-  @media (min-width: map-get(responsive.$breakpoints, tablet)) {
+  @include b.breakpoint-up(sm) {
     font-size: 3rem;
   }
 
-  @media (min-width: map-get(responsive.$breakpoints, desktop)) {
+  @include b.breakpoint-up(lg) {
     font-size: 4rem;
   }
 }
 
-/** Subtitle */
+// Subtitle
 .hero__subtitle {
   font-size: 1.125rem;
   line-height: 1.6;
   max-width: 600px;
 
-  @media (min-width: map-get(responsive.$breakpoints, tablet)) {
+  @include b.breakpoint-up(sm) {
     font-size: 1.25rem;
   }
 
-  @media (min-width: map-get(responsive.$breakpoints, desktop)) {
+  @include b.breakpoint-up(lg) {
     font-size: 1.5rem;
   }
 }
 
-/** Split layout wrapper */
+// Split layout wrapper
 .hero__wrapper {
   display: flex;
   flex-direction: column;
   width: 100%;
   min-height: 500px;
 
-  @media (min-width: map-get(responsive.$breakpoints, tablet)) {
+  @include b.breakpoint-up(sm) {
     flex-direction: row;
   }
 }
 
-/** Media (for split layouts) */
+// Media (for split layouts)
 .hero__media {
   position: relative;
   width: 100%;
   min-height: 300px;
   overflow: hidden;
 
-  @media (min-width: map-get(responsive.$breakpoints, tablet)) {
+  @include b.breakpoint-up(sm) {
     width: 50%;
     min-height: 500px;
   }
@@ -210,14 +210,14 @@
     width: 50%;
     min-height: 500px;
     
-    @media (max-width: (map-get(responsive.$breakpoints, tablet) - 1)) {
+    @include b.breakpoint-down(sm) {
       width: 100%;
       min-height: auto;
     }
   }
   
   .hero__wrapper {
-    @media (min-width: map-get(responsive.$breakpoints, tablet)) {
+    @include b.breakpoint-up(sm) {
       flex-direction: row-reverse;
     }
   }
@@ -229,7 +229,7 @@
     width: 50%;
     min-height: 500px;
     
-    @media (max-width: (map-get(responsive.$breakpoints, tablet) - 1)) {
+    @include b.breakpoint-down(sm) {
       width: 100%;
       min-height: auto;
     }

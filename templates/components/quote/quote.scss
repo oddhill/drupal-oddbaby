@@ -1,9 +1,8 @@
 @use '../../../src/scss/variables/color';
-@use '../../../src/scss/variables/responsive';
+@use '../../../src/scss/mixins/breakpoints' as b;
 
 .quote {
   width: 100%;
-  padding: 3rem 1.5rem;
 
   &__container {
     max-width: 800px;
@@ -23,11 +22,11 @@
     font-style: italic;
     line-height: 1.4;
 
-    @media (min-width: map-get(responsive.$breakpoints, tablet)) {
+    @include b.breakpoint-up(sm) {
       font-size: 2rem;
     }
 
-    @media (min-width: map-get(responsive.$breakpoints, desktop)) {
+    @include b.breakpoint-up(lg) {
       font-size: 2.5rem;
     }
   }
@@ -43,7 +42,7 @@
       content: '— ';
     }
 
-    @media (min-width: map-get(responsive.$breakpoints, tablet)) {
+    @include b.breakpoint-up(sm) {
       font-size: 1.125rem;
     }
   }

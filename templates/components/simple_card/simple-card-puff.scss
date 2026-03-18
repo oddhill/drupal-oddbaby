@@ -1,4 +1,4 @@
-@use '../../../src/scss/variables/responsive';
+@use '../../../src/scss/mixins/breakpoints' as b;
 
 .simple-card {
   --simple-card-cols-mobile: 1;
@@ -40,13 +40,13 @@
     }
   }
 
-  @media (min-width: map-get(responsive.$breakpoints, tablet)) {
+  @include b.breakpoint-up(sm) {
     &__grid {
       grid-template-columns: repeat(var(--simple-card-cols-tablet), minmax(0, 1fr));
     }
   }
 
-  @media (min-width: map-get(responsive.$breakpoints, tablet-landscape)) {
+  @include b.breakpoint-up(md) {
     &__grid {
       grid-template-columns: repeat(var(--simple-card-cols-desktop), minmax(0, 1fr));
     }
@@ -82,13 +82,13 @@
   }
 }
 
-@media (min-width: map-get(responsive.$breakpoints, tablet)) {
+@include b.breakpoint-up(sm) {
   :has(> .views-row > .node--view-mode--puff) {
     grid-template-columns: repeat(var(--simple-card-cols-tablet), minmax(0, 1fr));
   }
 }
 
-@media (min-width: map-get(responsive.$breakpoints, tablet-landscape)) {
+@include b.breakpoint-up(md) {
   :has(> .views-row > .node--view-mode--puff) {
     grid-template-columns: repeat(var(--simple-card-cols-desktop), minmax(0, 1fr));
   }
@@ -150,3 +150,4 @@
   outline: 2px solid currentColor;
   outline-offset: 2px;
 }
+

@@ -1,0 +1,63 @@
+// Breakpoint mixins and functions
+
+@use '../variables/breakpoints';
+@use 'sass:math';
+
+@function breakpoint-min($name, $breakpoints: breakpoints.$breakpoints) {
+  $min: map-get($breakpoints, $name);
+  @return if($min !=0, $min, null);
+}
+
+@function breakpoint-max($name, $breakpoints: breakpoints.$breakpoints) {
+  $max: map-get($breakpoints, $name);
+  @return if($max and $max > 0, $max - 0.02, null);
+}
+
+@function breakpoint-bp($name, $breakpoints: breakpoints.$breakpoints) {
+  @return if(breakpoint-min($name, $breakpoints) == null, '', '-#{$name}');
+}
+
+@function breakpoint-bp-up($name, $breakpoints: breakpoints.$breakpoints-up) {
+  @return if(breakpoint-min($name, $breakpoints) == null, '', '-#{$name}');
+}
+
+@mixin breakpoint-between($lower, $upper, $breakpoints: breakpoints.$breakpoints) {
+  $min: breakpoint-min($lower, $breakpoints);
+  $max: breakpoint-max($upper, $breakpoints);
+
+  @if $min != null and $max != null {
+    @media (min-width: $min) and (max-width: $max) {
+      @content;
+    }
+  } @else if $max == null {
+    @include breakpoint-up($lower, $breakpoints) {
+      @content;
+    }
+  } @else if $min == null {
+    @include breakpoint-down($upper, $breakpoints) {
+      @content;
+    }
+  }
+}
+
+@mixin breakpoint-up($size, $breakpoints: breakpoints.$breakpoints) {
+  $min: breakpoint-min($size, $breakpoints);
+  @if $min {
+    @media (min-width: $min) {
+      @content;
+    }
+  } @else {
+    @content;
+  }
+}
+
+@mixin breakpoint-down($size, $breakpoints: breakpoints.$breakpoints) {
+  $max: breakpoint-max($size, $breakpoints);
+  @if $max {
+    @media (max-width: $max) {
+      @content;
+    }
+  } @else {
+    @content;
+  }
+}

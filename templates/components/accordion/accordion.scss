@@ -1,5 +1,5 @@
 
-@use '../../../src/scss/variables/responsive';
+@use '../../../src/scss/mixins/breakpoints' as b;
 
 .accordion {
   border: 1px solid #e5e7eb;
@@ -34,7 +34,7 @@
     background: #f9fafb;
   }
 
-  @media (min-width: map-get(responsive.$breakpoints, desktop)) {
+  @include b.breakpoint-up('md') {
     font-size: 1.125rem;
   }
 }
