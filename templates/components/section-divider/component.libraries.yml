@@ -1,0 +1,4 @@
+section-divider:
+  css:
+    theme:
+      build/css/section-divider.css: { minified: true }

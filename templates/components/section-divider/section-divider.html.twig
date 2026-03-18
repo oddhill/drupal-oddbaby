@@ -1,0 +1,41 @@
+{#
+# Section Divider Component
+
+# Props:
+- line: boolean, show a horizontal line
+- header_content: string, optional header text
+- header_size: string, optional header size (e.g. 'h2', 'h3'). Default: 'h2'
+- class: optional extra CSS classes
+
+# Line and header can be used together for a combined section divider.
+
+# Example usage:
+{% include '@oddbaby/templates/components/section-divider/section-divider.html.twig' with {
+  line: true,
+  header_content: 'Section Header',
+  header_size: 'h1',
+%}
+#
+#}
+
+{{ attach_library(active_theme() ~ '/section-divider') }}
+
+<div class="section-divider">
+    {% if line and header_content %}
+        <div class="section-divider__combination">
+            <span class="section-divider__line"></span>
+            <div class="section-divider__header">
+                <{{ header_size|default('h2') }}>{{ header_content }}</{{ header_size|default('h2') }}>
+            </div>
+            <span class="section-divider__line"></span>
+        </div>
+    {% elseif line %}
+        <div class="section-divider__line-wrapper">
+            <span class="section-divider__line"></span>
+        </div>
+    {% elseif header_content %}
+        <div class="section-divider__header">
+            <{{ header_size|default('h2') }}>{{ header_content }}</{{ header_size|default('h2') }}>
+        </div>
+    {% endif %}
+</div>
