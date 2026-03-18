@@ -1,0 +1,84 @@
+{
+  "collection-mode 1": {
+    "color": {
+      "primary": {
+        "value": "#FF9900FF",
+        "type": "color",
+        "scope": [
+          "ALL_SCOPES"
+        ],
+        "$extensions": {
+          "tokens-studio": {
+            "mode": "mode 1"
+          }
+        }
+      },
+      "secondary": {
+        "value": "#FFE058FF",
+        "type": "color",
+        "scope": [
+          "ALL_SCOPES"
+        ],
+        "$extensions": {
+          "tokens-studio": {
+            "mode": "mode 1"
+          }
+        }
+      }
+    },
+    "breakpoint": {
+      "mobile": {
+        "value": "320",
+        "type": "float",
+        "scope": [
+          "ALL_SCOPES"
+        ],
+        "$extensions": {
+          "tokens-studio": {
+            "mode": "mode 1"
+          }
+        }
+      },
+      "tablet": {
+        "value": "768",
+        "type": "float",
+        "scope": [
+          "ALL_SCOPES"
+        ],
+        "$extensions": {
+          "tokens-studio": {
+            "mode": "mode 1"
+          }
+        }
+      },
+      "desktop": {
+        "value": "1024",
+        "type": "float",
+        "scope": [
+          "ALL_SCOPES"
+        ],
+        "$extensions": {
+          "tokens-studio": {
+            "mode": "mode 1"
+          }
+        }
+      }
+    },
+    "typography": {
+      "font-size": {
+        "body": {
+          "value": "16",
+          "type": "float",
+          "scope": [
+            "ALL_SCOPES"
+          ],
+          "$extensions": {
+            "tokens-studio": {
+              "mode": "mode 1"
+            }
+          }
+        }
+      }
+    }
+  }
+}

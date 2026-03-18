@@ -1,0 +1,104 @@
+{
+  "fileName": "design1",
+  "textStyles": [
+    {
+      "name": "base/thin",
+      "fontFamily": "Inter",
+      "fontWeight": "Thin",
+      "fontSize": 16,
+      "letterSpacing": {
+        "unit": "PIXELS",
+        "value": 0
+      },
+      "textCase": "ORIGINAL"
+    },
+    {
+      "name": "base/extralight",
+      "fontFamily": "Inter",
+      "fontWeight": "Extra Light",
+      "fontSize": 16,
+      "letterSpacing": {
+        "unit": "PIXELS",
+        "value": 0
+      },
+      "textCase": "ORIGINAL"
+    },
+    {
+      "name": "base/light",
+      "fontFamily": "Inter",
+      "fontWeight": "Light",
+      "fontSize": 16,
+      "letterSpacing": {
+        "unit": "PIXELS",
+        "value": 0
+      },
+      "textCase": "ORIGINAL"
+    },
+    {
+      "name": "base/normal",
+      "fontFamily": "Inter",
+      "fontWeight": "Regular",
+      "fontSize": 16,
+      "letterSpacing": {
+        "unit": "PIXELS",
+        "value": 0
+      },
+      "textCase": "ORIGINAL"
+    },
+    {
+      "name": "base/medium",
+      "fontFamily": "Inter",
+      "fontWeight": "Medium",
+      "fontSize": 16,
+      "letterSpacing": {
+        "unit": "PIXELS",
+        "value": 0
+      },
+      "textCase": "ORIGINAL"
+    },
+    {
+      "name": "base/semibold",
+      "fontFamily": "Inter",
+      "fontWeight": "Semi Bold",
+      "fontSize": 16,
+      "letterSpacing": {
+        "unit": "PIXELS",
+        "value": 0
+      },
+      "textCase": "ORIGINAL"
+    },
+    {
+      "name": "base/bold",
+      "fontFamily": "Inter",
+      "fontWeight": "Bold",
+      "fontSize": 16,
+      "letterSpacing": {
+        "unit": "PIXELS",
+        "value": 0
+      },
+      "textCase": "ORIGINAL"
+    },
+    {
+      "name": "base/extrabold",
+      "fontFamily": "Inter",
+      "fontWeight": "Extra Bold",
+      "fontSize": 16,
+      "letterSpacing": {
+        "unit": "PIXELS",
+        "value": 0
+      },
+      "textCase": "ORIGINAL"
+    },
+    {
+      "name": "base/black",
+      "fontFamily": "Inter",
+      "fontWeight": "Black",
+      "fontSize": 16,
+      "letterSpacing": {
+        "unit": "PIXELS",
+        "value": 0
+      },
+      "textCase": "ORIGINAL"
+    }
+  ]
+}
