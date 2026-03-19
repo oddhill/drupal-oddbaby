@@ -1,0 +1,4 @@
+pagination:
+  css:
+    theme:
+      build/css/pagination.css: { minified: true }
