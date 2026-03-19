@@ -2,6 +2,7 @@ import EmblaCarousel, { EmblaCarouselType } from 'embla-carousel';
 import AutoHeight from 'embla-carousel-auto-height';
 import Accessibility from 'embla-carousel-accessibility';
 import { getResponsiveValue, onBreakpointChange, getCurrentBreakpoint, type BreakpointName } from './breakpoints.ts';
+import './slider.scss';
 
 declare const Drupal: {
   behaviors: Record<string, { attach: (context: ParentNode) => void }>;

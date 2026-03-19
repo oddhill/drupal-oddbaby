@@ -1,2 +1,1 @@
-import 'core-js/stable';
-import 'regenerator-runtime/runtime';
+// ES2020 native support - no polyfills needed
