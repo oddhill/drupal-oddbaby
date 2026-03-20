@@ -16,10 +16,34 @@ try {
   console.log('No component entries found yet. Run webpack once to generate them.');
 }
 
+// Discover all JS files in src/js recursively
+function findJsFiles(dir, basePath = '') {
+  const jsFiles = {};
+  const items = fs.readdirSync(dir, { withFileTypes: true });
+  
+  for (const item of items) {
+    const fullPath = path.join(dir, item.name);
+    const entryKey = basePath ? `${basePath}/${item.name.replace('.js', '')}` : item.name.replace('.js', '');
+    
+    if (item.isDirectory()) {
+      // Recurse into subdirectories
+      Object.assign(jsFiles, findJsFiles(fullPath, entryKey));
+    } else if (item.isFile() && item.name.endsWith('.js')) {
+      jsFiles[entryKey] = fullPath;
+    }
+  }
+  return jsFiles;
+}
+
+const jsFileEntries = findJsFiles(path.resolve(__dirname, './src/js'));
+
 // Build entry points - separate entry for each stylesheet to get separate CSS files
 const entries = {
   main: path.resolve(__dirname, './src/js/main.ts'),
   main_css: path.resolve(__dirname, './src/css-entries/main.ts'),
+  print_css: path.resolve(__dirname, './src/css-entries/print.ts'),
+  ckeditor_css: path.resolve(__dirname, './src/css-entries/ckeditor.ts'),
+  ...jsFileEntries,
   ...Object.fromEntries(
     Object.entries(componentEntries).map(([key, val]) => [
       key,
@@ -63,8 +87,8 @@ export default defineConfig(({ command, mode }) => {
     build: {
       outDir: 'build',
       emptyOutDir: true,
-      sourcemap: true,
-      minify: !isDev ? 'terser' : false,
+      sourcemap: isDev, // Only generate sourcemaps in dev mode (watch)
+      minify: !isDev ? 'esbuild' : false,
       target: 'es2020',
       reportCompressedSize: false,
       assetsInlineLimit: 0, // Disable inlining - keep all assets as separate files for better cache control
@@ -99,8 +123,6 @@ export default defineConfig(({ command, mode }) => {
           },
           chunkFileNames: 'js/[name].[hash].js',
           format: 'es', // ES modules instead of IIFE for better multi-entry support
-          // This publicPath is crucial: from css/ folder, go up to access graphics/
-          publicPath: '../',
           // Provide jQuery from global scope
           globals: {
             jquery: 'jQuery',
@@ -110,6 +132,7 @@ export default defineConfig(({ command, mode }) => {
     },
     // CSS handling with sourcemaps
     css: {
+      devSourcemap: true, // Enable CSS source maps during development
       preprocessorOptions: {
         scss: {
           // Suppress deprecation warnings if using newer Sass
