@@ -16,7 +16,7 @@ const path = require('path');
 const YAML = require('yaml');
 
 const THEME_ROOT = path.resolve(__dirname, '..');
-const THEME_NAME = path.basename(THEME_ROOT);
+const THEME_NAME = 'oddbaby';
 const COMPONENTS_ROOT = path.join(THEME_ROOT, 'templates', 'components');
 const THEME_LIBRARIES_FILE = path.join(THEME_ROOT, `${THEME_NAME}.libraries.yml`);
 const GENERATED_DIR = path.join(THEME_ROOT, 'scripts', '.generated');

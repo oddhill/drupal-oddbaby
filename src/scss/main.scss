@@ -46,3 +46,9 @@
 // Breakpoint styling
 
 @use './variables/breakpoints';
+// Test graphics processing
+// Remove this after testing - verifies Vite is hashing graphics correctly
+.vite-graphics-test {
+  /* This will be hashed */
+  background: url('../assets/graphics/example-image.jpg') no-repeat center / contain;
+}
