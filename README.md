@@ -76,12 +76,12 @@ To enable theme-level environment variable loading for **Font Awesome Kit Integr
 
 ### Adding Theme-Level .env Support
 
-1. Reference the included `settings.example.php` file in this theme directory
-2. Copy the code block from `settings.example.php`
+1. Locate the `settings.example.php` file in this theme directory (`public/themes/oddbaby/settings.example.php`)
+2. Copy the code block from that file (between the dashed lines marked "BEGIN" and "END")
 3. Paste it into your Drupal installation's `settings.php` file (typically at `public/sites/default/settings.php`)
 4. Save the file
 
-Once added, the code will run on every request and automatically load `.env` files from all theme directories. This is **essential** for Font Awesome Kit and other theme modules that depend on environment variables during Drupal's bootstrap process.
+Once added, the code will run on every request and automatically load `.env` files from all theme directories and configure Font Awesome Kit. This is **essential** for Font Awesome Kit and other theme modules that depend on environment variables during Drupal's bootstrap process.
 
 **Note:** This setup is a prerequisite for the Font Awesome Kit Integration steps below.
 
@@ -116,6 +116,18 @@ vendor/bin/drush ev "button_link_post_update_sync_fontawesome_kit();"
 
 This will fetch and install your Font Awesome Kit npm package. The icons will then be available in the icon picker within the admin UI for use in the `button_link`, `paragraph_media_with_text`, and `paragraph_promo` modules.
 
+**First, run database updates:**
+
+```bash
+vendor/bin/drush updb
+```
+
+Then run the sync command:
+
+```bash
+vendor/bin/drush ev "button_link_post_update_sync_fontawesome_kit();"
+```
+
 ### Switching Kits or Adding New Icons
 
 **To use a different Font Awesome kit:**
@@ -124,6 +136,7 @@ This will fetch and install your Font Awesome Kit npm package. The icons will th
 2. Rebuild cache, sync the kit package, then rebuild cache again:
    ```bash
    vendor/bin/drush cr
+   vendor/bin/drush updb
    vendor/bin/drush ev "button_link_post_update_sync_fontawesome_kit();"
    vendor/bin/drush cr
    ```
@@ -150,14 +163,13 @@ The new icons will appear in the icon picker.
 
 **Configuration Flow:**
 
-1. `.env` file contains `FONT_AWESOME_KIT_URL`
-2. `settings.php` (with code from `settings.example.php`) loads the `.env` file into `$_SERVER`
-3. `oddbaby.theme` (around line 19) reads `$_SERVER['FONT_AWESOME_KIT_URL']` and passes it to Drupal's config system for `button_link.settings`
+1. `.env` file (in theme directory) contains `FONT_AWESOME_KIT_URL`
+2. `settings.php` (with code from `settings.example.php`) loads theme `.env` files into `$_SERVER`
+3. `settings.php` also reads `$_SERVER['FONT_AWESOME_KIT_URL']` and sets it in Drupal's config: `$config['button_link.settings']['kit_url']`
 4. `button_link` module uses the configured kit URL to load icons
 
 **Backend Components:**
 
-- **`oddbaby.theme`** - Bridges environment variable to Drupal config
 - **`FontAwesomeKitIconProvider.php`** - Reads icons from the local npm package `@awesome.me/kit-*` (installed in `public/themes/custom/{THEME_NAME}/node_modules/`)
 - **`icon-picker.js`** - Provides searchable UI widget for selecting icons
 - **Endpoint** - `/button-link/fontawesome-kit-icons.json` returns available icons

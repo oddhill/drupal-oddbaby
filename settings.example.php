@@ -34,6 +34,20 @@ foreach ($theme_dirs as $theme_dir) {
   }
 }
 
+/**
+ * Set Font Awesome Kit URL from environment variable.
+ *
+ * This reads the FONT_AWESOME_KIT_URL from the theme's .env file
+ * and sets it in Drupal's config system so that button_link module
+ * can access it during initialization.
+ */
+if (!empty($_SERVER['FONT_AWESOME_KIT_URL'])) {
+  $kitUrl = trim((string) $_SERVER['FONT_AWESOME_KIT_URL']);
+  if ($kitUrl !== '' && preg_match('#kit\.fontawesome\.com#i', $kitUrl)) {
+    $config['button_link.settings']['kit_url'] = $kitUrl;
+  }
+}
+
 /*
  * --- END: Copy this code block to settings.php ---
  */
