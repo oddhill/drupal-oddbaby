@@ -41,8 +41,6 @@ const jsFileEntries = findJsFiles(path.resolve(__dirname, './src/js'));
 const entries = {
   main: path.resolve(__dirname, './src/js/main.ts'),
   main_css: path.resolve(__dirname, './src/css-entries/main.ts'),
-  print_css: path.resolve(__dirname, './src/css-entries/print.ts'),
-  ckeditor_css: path.resolve(__dirname, './src/css-entries/ckeditor.ts'),
   ...jsFileEntries,
   ...Object.fromEntries(
     Object.entries(componentEntries).map(([key, val]) => [
@@ -60,6 +58,7 @@ export default defineConfig(({ command, mode }) => {
   const isDev = mode === 'development';
 
   return {
+    publicDir: path.resolve(__dirname, './src/public'),
     resolve: {
       alias: {
         '@': path.resolve(__dirname, './src'),
