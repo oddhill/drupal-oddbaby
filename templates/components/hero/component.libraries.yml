@@ -1,0 +1,4 @@
+hero:
+  css:
+    theme:
+      build/css/hero.css: { minified: true }

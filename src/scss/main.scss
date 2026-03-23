@@ -38,3 +38,11 @@
 
 @use './media/image';
 @use './media/video';
+
+// Typography styling
+
+@use './variables/typography';
+
+// Breakpoint styling
+
+@use './variables/breakpoints';

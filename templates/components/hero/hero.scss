@@ -1,0 +1,237 @@
+@use '../../../src/scss/variables/color';
+@use '../../../src/scss/mixins/breakpoints' as b;
+
+.hero {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 500px;
+  overflow: hidden;
+  color: color.$white;
+  text-align: center;
+
+  // Text alignment
+  &--align-left {
+    text-align: left;
+
+    .hero__content {
+      align-items: flex-start;
+    }
+  }
+
+  &--align-center {
+    text-align: center;
+
+    .hero__content {
+      align-items: center;
+    }
+  }
+
+  &--align-right {
+    text-align: right;
+
+    .hero__content {
+      align-items: flex-end;
+    }
+  }
+
+  // Overlay effect
+  &--overlay {
+    &::before {
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: 1;
+      width: 100%;
+      height: 100%;
+      opacity: 1;
+      transition: opacity 500ms ease-in-out;
+      background: linear-gradient(to top, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0) 100%);
+      content: '';
+    }
+  }
+
+  // Background colors (predefined options)
+  &--bg-primary {
+    background-color: #007bff;
+  }
+
+  &--bg-secondary {
+    background-color: #6c757d;
+  }
+
+  &--bg-dark {
+    background-color: #343a40;
+  }
+
+  &--bg-light {
+    background-color: #f8f9fa;
+    color: color.$charcoal;
+  }
+}
+
+// Background media
+.hero__background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+
+  &--image {
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+  }
+
+  &--video {
+    overflow: hidden;
+  }
+}
+
+.hero__video {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100%;
+  height: 100%;
+  min-width: 100%;
+  min-height: 100%;
+  transform: translate(-50%, -50%);
+  object-fit: cover;
+}
+
+// Video in split layout (direct child of hero__media)
+.hero__media > .hero__video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  transform: none;
+}
+
+// Content container
+.hero__container {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: 1200px;
+  padding: 1rem;
+  margin: 0 auto;
+
+  @include b.breakpoint-up(sm) {
+    padding: 4rem;
+  }
+
+  @include b.breakpoint-up(lg) {
+    padding: 6rem;
+  }
+}
+
+.hero__content {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+// Title
+.hero__title {
+  margin: 0;
+  font-size: 2rem;
+  font-weight: 700;
+  line-height: 1.2;
+
+  @include b.breakpoint-up(sm) {
+    font-size: 3rem;
+  }
+
+  @include b.breakpoint-up(lg) {
+    font-size: 4rem;
+  }
+}
+
+// Subtitle
+.hero__subtitle {
+  font-size: 1.125rem;
+  line-height: 1.6;
+  max-width: 600px;
+
+  @include b.breakpoint-up(sm) {
+    font-size: 1.25rem;
+  }
+
+  @include b.breakpoint-up(lg) {
+    font-size: 1.5rem;
+  }
+}
+
+// Split layout wrapper
+.hero__wrapper {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  min-height: 500px;
+
+  @include b.breakpoint-up(sm) {
+    flex-direction: row;
+  }
+}
+
+// Media (for split layouts)
+.hero__media {
+  position: relative;
+  width: 100%;
+  min-height: 300px;
+  overflow: hidden;
+
+  @include b.breakpoint-up(sm) {
+    width: 50%;
+    min-height: 500px;
+  }
+}
+
+.hero__image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+
+.hero--layout-split-left {
+  .hero__container {
+    max-width: none;
+    width: 50%;
+    min-height: 500px;
+    
+    @include b.breakpoint-down(sm) {
+      width: 100%;
+      min-height: auto;
+    }
+  }
+  
+  .hero__wrapper {
+    @include b.breakpoint-up(sm) {
+      flex-direction: row-reverse;
+    }
+  }
+}
+
+.hero--layout-split-right {
+  .hero__container {
+    max-width: none;
+    width: 50%;
+    min-height: 500px;
+    
+    @include b.breakpoint-down(sm) {
+      width: 100%;
+      min-height: auto;
+    }
+  }
+}

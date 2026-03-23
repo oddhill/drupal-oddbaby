@@ -1,0 +1,4 @@
+sticky:
+  css:
+    theme:
+      build/css/sticky.css: { minified: true }

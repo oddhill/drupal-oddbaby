@@ -1,0 +1,9 @@
+accordion:
+  css:
+    theme:
+      build/css/accordion.css: { minified: true }
+  js:
+    build/js/accordion.js: { minified: true }
+  dependencies:
+  - core/drupal
+  - core/once

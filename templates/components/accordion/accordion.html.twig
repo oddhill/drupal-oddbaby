@@ -1,0 +1,34 @@
+{#
+  Accordion component
+  
+  Props:
+  - items: array of accordion items with 'heading' and 'content'
+  - single_open: (optional) if true, only one item can be open at a time. Default: false
+  - class: optional extra CSS classes
+
+  Example:
+  {% include '@oddbaby/templates/components/accordion/accordion.html.twig' with {
+    items: [
+      { heading: 'Section 1', content: 'Content for section 1' },
+      { heading: 'Section 2', content: 'Content for section 2', open: true },
+    ],
+    single_open: true
+  } %}
+#}
+
+{{ attach_library(active_theme() ~ '/accordion') }}
+
+<div class="accordion {{ single_open ? 'accordion--single-open' }} {{ class|default('') }}">
+  {% for item in items %}
+    <details class="accordion__item" {{ item.open ? 'open' }}>
+      <summary class="accordion__heading">
+        {{ item.heading }}
+      </summary>
+      <div class="accordion__body">
+        <div class="accordion__content">
+          {{ item.content }}
+        </div>
+      </div>
+    </details>
+  {% endfor %}
+</div>

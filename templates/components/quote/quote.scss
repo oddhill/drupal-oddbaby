@@ -1,0 +1,49 @@
+@use '../../../src/scss/variables/color';
+@use '../../../src/scss/mixins/breakpoints' as b;
+
+.quote {
+  width: 100%;
+
+  &__container {
+    max-width: 800px;
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  &__content {
+    margin: 0;
+    padding: 0;
+  }
+
+  &__quote {
+    margin: 0 0 1.5rem;
+    font-size: 1.5rem;
+    font-weight: 600;
+    font-style: italic;
+    line-height: 1.4;
+
+    @include b.breakpoint-up(sm) {
+      font-size: 2rem;
+    }
+
+    @include b.breakpoint-up(lg) {
+      font-size: 2.5rem;
+    }
+  }
+
+  &__source {
+    display: block;
+    margin-top: 1rem;
+    font-size: 1rem;
+    font-style: normal;
+    opacity: 0.8;
+
+    &::before {
+      content: '— ';
+    }
+
+    @include b.breakpoint-up(sm) {
+      font-size: 1.125rem;
+    }
+  }
+}

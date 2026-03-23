@@ -1,0 +1,96 @@
+{#
+/**
+ * Pagination Component
+ *
+ * Props:
+ * - items: object with the following keys:
+ *   - first: link to first page (optional)
+ *   - previous: link to previous page (optional)
+ *   - pages: array of page items with 'href' and 'text' keys
+ *   - current: current page number
+ *   - next: link to next page (optional)
+ *   - last: link to last page (optional)
+ * - heading_id: unique ID for aria-labelledby (optional)
+ */
+#}
+
+{{ attach_library(active_theme() ~ '/pagination') }}
+
+{% if items %}
+  <nav class="pagination" aria-label="{{ 'Pagination'|t }}"{% if heading_id %} aria-labelledby="{{ heading_id }}"{% endif %}>
+    <ul class="pagination__list">
+      {# First page link #}
+      {% if items.first %}
+        <li class="pagination__item pagination__item--first">
+          <a href="{{ items.first.href }}" class="pagination__link" aria-label="{{ 'Go to first page'|t }}"{{ items.first.attributes|without('href', 'title') }}>
+            <span aria-hidden="true">&laquo;</span>
+          </a>
+        </li>
+      {% endif %}
+
+      {# Previous page link #}
+      {% if items.previous %}
+        <li class="pagination__item pagination__item--previous">
+          <a href="{{ items.previous.href }}" class="pagination__link" aria-label="{{ 'Go to previous page'|t }}"{{ items.previous.attributes|without('href', 'title') }}>
+            <span aria-hidden="true">&lsaquo;</span>
+          </a>
+        </li>
+      {% endif %}
+
+      {# Ellipsis before visible pages #}
+      {% if ellipses.previous %}
+        <li class="pagination__item">
+          <span class="pagination__ellipsis">&hellip;</span>
+        </li>
+      {% endif %}
+
+      {# Page number links #}
+      {% if items.pages %}
+        {% for key, page in items.pages %}
+          {% if current == key %}
+            <li class="pagination__item pagination__item--active">
+              <span class="pagination__link pagination__link--current" aria-current="page">
+                {{ key }}
+              </span>
+            </li>
+          {% elseif page.href %}
+            <li class="pagination__item">
+              <a href="{{ page.href }}" class="pagination__link" aria-label="{{ 'Go to page @number'|t({'@number': key}) }}"{{ page.attributes|without('href', 'title') }}>
+                {{ key }}
+              </a>
+            </li>
+          {% else %}
+            <li class="pagination__item">
+              <span class="pagination__ellipsis">&hellip;</span>
+            </li>
+          {% endif %}
+        {% endfor %}
+      {% endif %}
+
+      {# Ellipsis after visible pages #}
+      {% if ellipses.next %}
+        <li class="pagination__item">
+          <span class="pagination__ellipsis">&hellip;</span>
+        </li>
+      {% endif %}
+
+      {# Next page link #}
+      {% if items.next %}
+        <li class="pagination__item pagination__item--next">
+          <a href="{{ items.next.href }}" class="pagination__link" aria-label="{{ 'Go to next page'|t }}"{{ items.next.attributes|without('href', 'title') }}>
+            <span aria-hidden="true">&rsaquo;</span>
+          </a>
+        </li>
+      {% endif %}
+
+      {# Last page link #}
+      {% if items.last %}
+        <li class="pagination__item pagination__item--last">
+          <a href="{{ items.last.href }}" class="pagination__link" aria-label="{{ 'Go to last page'|t }}"{{ items.last.attributes|without('href', 'title') }}>
+            <span aria-hidden="true">&raquo;</span>
+          </a>
+        </li>
+      {% endif %}
+    </ul>
+  </nav>
+{% endif %}

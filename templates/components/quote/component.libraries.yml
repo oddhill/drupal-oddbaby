@@ -1,0 +1,4 @@
+quote:
+  css:
+    theme:
+      build/css/quote.css: { minified: true }
