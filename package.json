@@ -21,6 +21,10 @@
   "dependencies": {
     "bootstrap": "^5.1.0",
     "core-js": "^3.2.1",
+    "embla-carousel": "^9.0.0-rc01",
+    "embla-carousel-accessibility": "^9.0.0-rc01",
+    "embla-carousel-auto-height": "^9.0.0-rc01",
+    "embla-carousel-autoplay": "^9.0.0-rc01",
     "normalize.css": "^8.0.0",
     "regenerator-runtime": "^0.13.3"
   },

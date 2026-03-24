@@ -1,0 +1,76 @@
+{#
+/**
+ * @file
+ * Node view mode template: Puff.
+ *
+ * Lives in templates/components/simple_card so it can reuse the card component
+ * styles while still being discovered by Drupal (anything under /templates is).
+ *
+ * Expected usage:
+ * - Configure per content type what fields should appear in view mode "Puff".
+ * - This template wraps those fields into a card that links to the node.
+ */
+#}
+
+{{ attach_library(active_theme() ~ '/simple_card_puff') }}
+
+{%
+  set base_classes = [
+    'node',
+    'node--type--' ~ node.bundle|clean_class,
+    view_mode ? 'node--view-mode--' ~ view_mode|clean_class,
+    not node.isPublished() ? 'node--unpublished',
+    'simple-card-item',
+    'simple-card-item--link',
+  ]
+%}
+
+{% set heading_value = label|default('') %}
+{% set heading_id = heading_value ? 'node-' ~ node.id() ~ '-heading' : '' %}
+
+{# Pick a media field if present (keep flexible across content types). #}
+{% set media = '' %}
+{% if content.field_media is defined %}
+  {% set media = content.field_media|render %}
+{% endif %}
+{% if not media and content.field_image is defined %}
+  {% set media = content.field_image|render %}
+{% endif %}
+{% if not media and content.field_hero_image is defined %}
+  {% set media = content.field_hero_image|render %}
+{% endif %}
+
+{# Pick a body/summary field if present (you control trimming in Manage display). #}
+{% set body = '' %}
+{% if content.field_summary is defined %}
+  {% set body = content.field_summary|render %}
+{% endif %}
+{% if not body and content.body is defined %}
+  {% set body = content.body|render %}
+{% endif %}
+{% if not body and content.field_body is defined %}
+  {% set body = content.field_body|render %}
+{% endif %}
+
+<a{{ attributes.addClass(base_classes).setAttribute('aria-labelledby', heading_id ?: null) }} href="{{ url }}">
+  {% if media %}
+    <div class="simple-card-item__media" aria-hidden="true">
+      {{ media }}
+    </div>
+  {% endif %}
+
+  <div class="simple-card-item__content">
+    {% if heading_value %}
+      <h3 id="{{ heading_id }}" class="simple-card-item__heading">
+        {{ heading_value|escape }}
+      </h3>
+    {% endif %}
+
+    {% if body %}
+      <div class="simple-card-item__body">
+        {{ body }}
+      </div>
+    {% endif %}
+  </div>
+
+</a>

@@ -4,6 +4,14 @@
 const { merge } = require('webpack-merge');
 const path = require('path');
 
+// Load auto-generated component entries (created by scripts/generate-component-libraries.js)
+let componentEntries = {};
+try {
+  componentEntries = require('./scripts/.generated/component-entries.json');
+} catch (e) {
+  // No components yet or first run.
+}
+
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const RemoveEmptyScriptsPlugin = require('webpack-remove-empty-scripts');
@@ -16,6 +24,7 @@ const commonConfig = {
     main: ['./js/main.ts', './scss/main.scss'],
     ckeditor: './scss/ckeditor.scss',
     print: './scss/print.scss',
+    ...componentEntries,
   },
   output: {
     path: path.resolve(__dirname, 'build'),

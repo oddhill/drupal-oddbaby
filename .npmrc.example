@@ -1,0 +1,16 @@
+# Font Awesome Package Token Authentication
+# 
+# This file contains authentication credentials for the private Font Awesome npm registry.
+# 
+# Setup Instructions:
+# 1. Create a new file called .npmrc in this directory (copy this file):
+#    cp .npmrc.example .npmrc
+# 2. Get your Font Awesome package token from: https://fontawesome.com/account/tokens
+#    (This token is also stored in 1Password)
+# 3. Replace YOUR_PACKAGE_TOKEN_HERE below with your actual token (keep the full UUID format)
+# 4. Never commit .npmrc to git - it's in .gitignore for security
+# 5. Run: pnpm install
+#
+
+@awesome.me:registry=https://npm.fontawesome.com/
+//npm.fontawesome.com/:_authToken=YOUR_PACKAGE_TOKEN_HERE

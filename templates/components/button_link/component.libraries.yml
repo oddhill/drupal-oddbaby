@@ -1,0 +1,9 @@
+button_link:
+  css:
+    theme:
+      build/css/button-link.css: { minified: true }
+  js:
+    build/js/button-link.js: { minified: true }
+  dependencies:
+  - core/drupal
+  - core/once

@@ -1,0 +1,31 @@
+{#
+/**
+ * @file
+ * Quote component template.
+ *
+ * Variables:
+ * - quote: The quote text to display
+ * - source: The source or author of the quote
+ */
+#}
+
+{{ attach_library(active_theme() ~ '/quote') }}
+
+{% set attributes = attributes|default(create_attribute()) %}
+
+{% set classes = [
+  'quote',
+] %}
+
+<div{{ attributes.addClass(classes) }}>
+  <div class="quote__container">
+    <blockquote class="quote__content">
+      {% if quote %}
+        <p class="quote__quote">{{ quote }}</p>
+      {% endif %}
+      {% if source %}
+        <cite class="quote__source">{{ source }}</cite>
+      {% endif %}
+    </blockquote>
+  </div>
+</div>

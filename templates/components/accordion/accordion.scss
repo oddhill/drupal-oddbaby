@@ -1,0 +1,60 @@
+
+@use '../../../src/scss/mixins/breakpoints' as b;
+
+.accordion {
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.accordion__item {
+  border-bottom: 1px solid #e5e7eb;
+
+  &:last-child {
+    border-bottom: none;
+  }
+}
+
+.accordion__heading {
+  display: block;
+  padding: 1.5rem;
+  font-weight: 600;
+  font-size: 1rem;
+  background: #fff;
+  cursor: pointer;
+  list-style: none;
+  transition: background-color 0.2s ease;
+
+  // Remove default marker
+  &::-webkit-details-marker {
+    display: none;
+  }
+
+  &:hover {
+    background: #f9fafb;
+  }
+
+  @include b.breakpoint-up('md') {
+    font-size: 1.125rem;
+  }
+}
+
+.accordion__body {
+  padding: 1.5rem;
+  min-height: 50px;
+  display: block;
+}
+
+.accordion__content {
+  line-height: 1.6;
+  color: #374151;
+
+  p {
+    margin: 0 0 1rem;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+}
+

@@ -1,0 +1,21 @@
+{#
+/**
+ * @file
+ * Drupal mini pager integration for pagination component.
+ *
+ * Note: Mini pagers only show previous/next buttons, not page numbers.
+ *
+ * Available variables:
+ * - heading_id: Pagination heading ID.
+ * - items: List of pager items (previous and next only).
+ * - current: The page number of the current page.
+ *
+ * @see template_preprocess_views_mini_pager()
+ */
+#}
+
+{% include '@oddbaby/templates/components/pagination/pagination.html.twig' with {
+  items: items,
+  current: current,
+  heading_id: heading_id,
+} %}

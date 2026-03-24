@@ -1,0 +1,17 @@
+$breakpoints: (
+  'xs': 320px,
+  'sm': 768px,
+  'md': 1024px,
+  'lg': 1440px,
+  'xl': 1920px,
+  'xxl': 2200px,
+);
+
+$breakpoints-up: (
+  'xs': 320.98px,
+  'sm': 768.98px,
+  'md': 1024.98px,
+  'lg': 1440.98px,
+  'xl': 1920.98px,
+  'xxl': 2200.98px,
+);

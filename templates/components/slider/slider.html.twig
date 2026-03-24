@@ -1,0 +1,157 @@
+{#
+/**
+ * @file
+ * Generic Embla Carousel slider component.
+ *
+ * Expected variables:
+ * - slider_id (optional): Unique id for aria relationships.
+ * - heading (optional): Slider heading text.
+ * - slides (optional): Array of rendered slide items.
+ * - autoplay (optional): Autoplay interval in milliseconds (e.g., 5000). Set to 0 or false to disable. Default: 0.
+ * - loop (optional): Enable infinite looping. Default: false.
+ * - slides_to_scroll (optional): Number of slides per scroll action (1+). Default: 1.
+ * - slides_per_view (optional): Number of slides visible at once (1+). Default: 1.
+ * - align (optional): Slide alignment: 'start', 'center', 'end'. Default: 'start'.
+ * - auto_height (optional): Auto-adjust viewport height to current slide. Default: false.
+ * - slides_per_breakpoint (optional): Object mapping breakpoint names to slides per view.
+ *   Example: { mobile: 1, tablet: 2, desktop: 3 }. Requires responsive.scss breakpoints.
+ * - slides_to_scroll_breakpoint (optional): Object mapping breakpoint names to slides to scroll.
+ *   Example: { mobile: 1, tablet: 2, desktop: 3 }. Requires responsive.scss breakpoints.
+ * - button_positioning (optional): Position of prev/next buttons. Options: 'bottom' (default), 'side-center'. Default: 'bottom'.
+ * - button_text (optional): Object with 'prev' and 'next' label text. Default: { prev: 'Previous', next: 'Next' }.
+ * - button_show_icons (optional): Show SVG icons in buttons. If false, shows text labels instead. Default: true.
+ * - button_hidden_breakpoints (optional): Array of breakpoint names where buttons should be hidden.
+ *   Example: ['mobile', 'tablet']. Buttons stay hidden on those breakpoints.
+ * - show_dots (optional): Show/hide pagination dots. Default: true.
+ *
+ * CSS custom properties (can be overridden):
+ * - --slider-gap: Spacing between slides. Default: 1rem.
+ * - --slider-control-bg: Button background color. Default: #0f172a.
+ * - --slider-control-fg: Button text color. Default: #fff.
+ * - --slide-size: Individual slide width. Behavior depends on slides_per_view:
+ *   * If slides_per_view > 1: Automatically calculated as 100% / slides_per_view
+ *   * If slides_per_view = 1: CSS value is preserved for custom layouts (e.g., 70% for peeking effect)
+ *   When using responsive breakpoints, the slide size automatically updates per breakpoint.
+ *   Example peeking layout with center alignment:
+ *     1. Set slides_per_view to 1 (or use breakpoint with value 1)
+ *     2. Set --slide-size: 70% in CSS for peeking effect
+ *     3. Use align: 'center' for centered slide with visible overflow on sides
+ *
+ * Example (from Views template):
+ * {% include '@theme/slider.html.twig' with {
+ *   slider_id: 'my-slider',
+ *   heading: 'Featured Items',
+ *   slides: slide_data,
+ *   autoplay: 0,
+ *   loop: true,
+ *   slides_to_scroll: 1,
+ *   slides_per_view: 2,
+ *   align: 'start',
+ *   auto_height: false,
+ *   slides_per_breakpoint: { mobile: 1, tablet: 2, desktop: 3 },
+ *   slides_to_scroll_breakpoint: { mobile: 1, tablet: 2, desktop: 3 },
+ *   button_positioning: 'side-center',
+ *   button_text: { prev: 'Previous', next: 'Next' },
+ *   button_show_icons: true,
+ *   button_hidden_breakpoints: ['mobile'],
+ *   show_dots: true
+ * } only %}
+ */
+#}
+
+{{ attach_library(active_theme() ~ '/slider') }}
+
+{% set resolved_slider_id = slider_id|default('slider-' ~ random()) %}
+{% set heading_id = resolved_slider_id ~ '-heading' %}
+{% set viewport_id = resolved_slider_id ~ '-viewport' %}
+
+{% set slide_items = slides|default([]) %}
+{% if slide_items is empty and rows is defined %}
+  {% set slide_items = rows %}
+{% endif %}
+
+{% set has_heading = heading is defined and heading %}
+{% set slide_count = slide_items|length %}
+
+{% set autoplay_interval = autoplay|default(false) %}
+{% set loop_enabled = loop|default(false) %}
+{% set slides_to_scroll = slides_to_scroll|default(1) %}
+{% set slides_per_view = slides_per_view|default(1) %}
+{% set align = align|default('start') %}
+{% set auto_height_enabled = auto_height|default(false) %}
+
+{% set responsive_slides_per_view = slides_per_breakpoint|default(false) %}
+{% set responsive_slides_to_scroll = slides_to_scroll_breakpoint|default(false) %}
+{% set button_position = button_positioning|default('bottom') %}
+{% set button_labels = button_text|default({ prev: 'Previous', next: 'Next' }) %}
+{% set button_show_icons_enabled = button_show_icons is not same as false %}
+{% set button_hidden_bps = button_hidden_breakpoints|default([]) %}
+{% set show_dots_enabled = show_dots is not same as false %}
+
+{% if slide_count > 0 %}
+  <section
+    class="slider{% if button_position == 'side-center' %} has-side-buttons{% endif %}"
+    data-slider="embla"
+    id="{{ resolved_slider_id }}"
+    data-autoplay="{{ autoplay_interval }}"
+    data-loop="{{ loop_enabled ? 'true' : 'false' }}"
+    data-slides-to-scroll="{{ slides_to_scroll }}"
+    data-slides-per-view="{{ slides_per_view }}"
+    data-align="{{ align }}"
+    data-auto-height="{{ auto_height_enabled ? 'true' : 'false' }}"
+    {% if responsive_slides_per_view %}data-slides-per-breakpoint="{{ responsive_slides_per_view|json_encode }}"{% endif %}
+    {% if responsive_slides_to_scroll %}data-slides-to-scroll-breakpoint="{{ responsive_slides_to_scroll|json_encode }}"{% endif %}
+    data-button-positioning="{{ button_position }}"
+    {% if button_hidden_bps %}data-button-hidden-breakpoints="{{ button_hidden_bps|json_encode }}"{% endif %}
+    {% if has_heading %}aria-labelledby="{{ heading_id }}"{% endif %}
+  >
+    {% if has_heading %}
+      <h2 id="{{ heading_id }}" class="slider__heading">{{ heading|escape }}</h2>
+    {% endif %}
+
+    <div class="slider__viewport" id="{{ viewport_id }}" tabindex="0" aria-label="Image slider" aria-roledescription="carousel">
+      <div class="slider__container">
+        {% for item in slide_items %}
+          <div class="slider__slide" role="group" aria-roledescription="slide" aria-label="{{ loop.index }} of {{ slide_count }}">
+            {{ item }}
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+
+    {% if slide_count > 1 %}
+      <div class="slider__controls" data-slider-controls>
+        <div class="slider__buttons">
+          <button type="button" class="slider__button slider__button--prev{% if not button_show_icons_enabled %} slider__button--text{% endif %}" data-slider-prev aria-controls="{{ viewport_id }}" aria-label="{{ button_labels.prev }}">
+            {% if button_show_icons_enabled %}
+              <svg class="slider__button__icon" viewBox="0 0 532 532" aria-hidden="true">
+                <path
+                  fill="black"
+                  d="M355.66 11.354c13.793-13.805 36.208-13.805 50.001 0 13.785 13.804 13.785 36.238 0 50.034L201.22 266l204.442 204.61c13.785 13.805 13.785 36.239 0 50.044-13.793 13.796-36.208 13.796-50.002 0a5994246.277 5994246.277 0 0 0-229.332-229.454 35.065 35.065 0 0 1-10.326-25.126c0-9.2 3.393-18.26 10.326-25.2C172.192 194.973 332.731 34.31 355.66 11.354Z"
+                ></path>
+              </svg>
+            {% else %}
+              <span>{{ button_labels.prev }}</span>
+            {% endif %}
+          </button>
+          <button type="button" class="slider__button slider__button--next{% if not button_show_icons_enabled %} slider__button--text{% endif %}" data-slider-next aria-controls="{{ viewport_id }}" aria-label="{{ button_labels.next }}">
+            {% if button_show_icons_enabled %}
+              <svg class="slider__button__icon" viewBox="0 0 532 532" aria-hidden="true">
+                <path
+                  fill="black"
+                  d="M176.34 520.646c-13.793 13.805-36.208 13.805-50.001 0-13.785-13.804-13.785-36.238 0-50.034L330.78 266 126.34 61.391c-13.785-13.805-13.785-36.239 0-50.044 13.793-13.796 36.208-13.796 50.002 0 22.928 22.947 206.395 206.507 229.332 229.454a35.065 35.065 0 0 1 10.326 25.126c0 9.2-3.393 18.26-10.326 25.2-45.865 45.901-206.404 206.564-229.332 229.52Z"
+                ></path>
+              </svg>
+            {% else %}
+              <span>{{ button_labels.next }}</span>
+            {% endif %}
+          </button>
+        </div>
+      </div>
+
+      {% if show_dots_enabled %}
+        <div class="slider__dots" data-slider-dots aria-label="Choose slide"></div>
+      {% endif %}
+    {% endif %}
+  </section>
+{% endif %}
