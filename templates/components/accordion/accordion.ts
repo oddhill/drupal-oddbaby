@@ -3,6 +3,7 @@
  * 
  * Optional single-open mode: Add the 'accordion--single-open' class to enable this behavior.
  */
+import './accordion.scss';
 
 interface DrupalBehavior {
   attach: (context: Document | HTMLElement, settings?: any) => void;
