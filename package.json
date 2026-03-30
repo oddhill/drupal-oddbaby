@@ -20,7 +20,6 @@
   },
   "browserslist": "defaults",
   "dependencies": {
-    "bootstrap": "^5.3.8",
     "embla-carousel": "^9.0.0-rc01",
     "embla-carousel-accessibility": "^9.0.0-rc01",
     "embla-carousel-auto-height": "^9.0.0-rc01",
