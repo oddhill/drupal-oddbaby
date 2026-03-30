@@ -4,7 +4,7 @@
   "description": "A starter theme for Drupal 11",
   "main": "src/js/main.ts",
   "repository": "https://www.github.com/oddhill/drupal-oddbaby",
-  "author": "Christoffer Palm <christoffer.palm@oddhill.se>",
+  "author": "",
   "license": "MIT",
   "engines": {
     "node": "22.*"
